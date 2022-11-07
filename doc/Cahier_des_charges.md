@@ -14,7 +14,7 @@ Afin de réaliser ceci nous créérons plusieurs class :
 - une class clé de répartition comprenant comme attributs le domaine d'activité et la préiode de l'année
 
 Le planning optimal sera déterminé dans l'idéal grâce au résultat d'un problème d'optimisation linéaire. 
-La fonction objectif sera donc la somme du nombre d'opérateurs par poste. Avec comme contraintes le nombre de colis expédiés à atteindre à la fin de la semaine, l'ordre des tâches. (d'autres contraintes seront certainement à rajouter) 
+La fonction objectif sera donc la somme du nombre d'opérateurs par poste. Avec comme contraintes le nombre de colis expédiés à atteindre à la fin de la semaine, l'ordre des tâches. (d'autres contraintes seront certainement à rajouter). Pour cela, nous utiliserons la bibliothèque Pulp. 
 
 Afin de développer l'interface Web, nous utiliserons la framework Flask. 
 
