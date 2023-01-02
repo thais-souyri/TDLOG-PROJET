@@ -6,7 +6,6 @@ def time_needed_post(nb_packages, activity_field,post):
     time_needed = nb_articles * post_time[activity_field-1][post.index]
     return time_needed
 
-
 def main(nb_packages, month, activity_field):
     planning = {}
     for j in range(0, 7):
