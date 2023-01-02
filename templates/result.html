@@ -1,43 +1,50 @@
 {% extends "layout.html" %}
 {% block body %}
-<form action="http://localhost:5000/login" method="post">
-    <div class="container">
-        <h1> Planning </h1>
-        <table class="table">
+<div class="">
+    <h1 id="page-title"> Planning </h1>
+    <table class="table">
 
-            <thead class="thead-dark">
-                <tr>
-                <th>Jours</th>
-                    {% for post in posts %}
-                <th>{{post }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-                <tbody>
-                {% for day,dictday in planning.items() %}
+        <thead class="thead-dark">
+        <tr>
+            <th>Jours</th>
+            {% for post in posts %}
+            <th>{{post }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for day,dictday in planning.items() %}
 
-                    {% for period, dict_posttype in dictday.items() %}
-                    if period=="matin"
-                <tr>
-                    <td> {{ day }} {{period}}</td>
+        {% for period, dict_posttype in dictday.items() %}
+        <tr>
+            <td> {{ day }} {{period}}</td>
 
 
-                        {% for posttype,int in dict_posttype.items() %}
-                    <td> {{int }} </td>
-                    {% endfor %}
-                </tr>
+            {% for posttype,int in dict_posttype.items() %}
+            <td> {{int }}</td>
+            {% endfor %}
+        </tr>
 
 
-                    {% endfor %}
-                {% endfor %}
+        {% endfor %}
+        {% endfor %}
 
 
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 
 </form>
 
+{% endblock %}
+
+{% block custom_css %}
+<style>
+    #page-title {
+        text-align: center;
+    }
+
+</style>
 {% endblock %}
 
 
