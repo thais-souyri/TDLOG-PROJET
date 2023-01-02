@@ -1,7 +1,7 @@
 class Posts:
-    def __init__(self, list_posts, time_posts, activityfield):
+    def __init__(self, list_posts, time_posts, ActivityField):
         self.name = list_posts
-        self.time = time_posts[activityfield.indice]
+        self.time = time_posts[ActivityField.index]
 
 
 class Post:
@@ -30,13 +30,23 @@ class WorkOrg:
 
 
 class Operator:
-    def __init__(self, break_time, nb_break, work_time, team, Posts):
+    def __init__(self, break_time, nb_break, work_time, team, posts, available, hours_worked):
         self.work = work_time
         self.break_ = break_time / nb_break
         self.team = team
+        self.post = posts
+        self.available = available
+        self.hours_worked = hours_worked
 
 
 class RepartitionKey:
     def __init__(self, day, WorkOrg):
         self.period = WorkOrg
         self.day = day
+
+class BaseKSolve :
+    def solve(nb_package, month, activity_field):
+        raise NotImplemented()
+
+class RandomSolver (BaseKSolve):
+    def solve (nb_package, month, activity_field):
