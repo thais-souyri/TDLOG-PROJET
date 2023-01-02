@@ -47,9 +47,9 @@ PLANNING_EXAMPLE: Dict[Day, Dict[DayPeriod, Dict[PostType, int]]] = {'lundi': {
         'nuit': {'pickeur rack': 1, 'pickeur etagere': 5, 'operateur skypod': 7, 'agent logistique ventilation': 0,
                  'agent logistique conduceteur de ligne emballage': 1, 'agent logistique palettisation': 3}}}
 
-DAYS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi", "Samedi"]
+DAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
 POSTS = ["pickeur rack", "pickeur etagere", "operateur skypod", "agent logistique ventilation",
-             "agent logistique conduceteur de ligne emballage", "agent logistique palettisation"]
+         "agent logistique conduceteur de ligne emballage", "agent logistique palettisation"]
 
 MONTHS = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre",
-              "Novembre", "Décembre"]
+          "Novembre", "Décembre"]

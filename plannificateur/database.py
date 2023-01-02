@@ -1,6 +1,7 @@
 from peewee import*
-db = SqliteDatabase('people.db')
 from datetime import date
+
+db = SqliteDatabase('people.db')
 
 
 class Post(Model):
@@ -38,7 +39,7 @@ db.create_tables([Person, Post, Activity])
 
 picking = Post.create(name='picking', time=2, index=1)
 emballage = Post.create(name='emballage', time=1, index=2)
-palettisation= Post.create(name='palettisation', time=3, index=3)
+palettisation = Post.create(name='palettisation', time=3, index=3)
 
 person1 = Person.create(name='one', post=picking, availability=True, nb_hour_week=0, nb_hour_day=0)
 person2 = Person.create(name='two', post=emballage, availability=True, nb_hour_week=0, nb_hour_day=0)
