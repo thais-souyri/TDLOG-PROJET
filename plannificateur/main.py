@@ -1,6 +1,6 @@
 import RO
 
-import data
+import data_test
 
 print ('Veuillez entrer le nombre de colis à expédier dans la semaine: ')
 nb_package = input()
