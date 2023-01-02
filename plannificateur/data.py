@@ -36,5 +36,8 @@ person3 = Person.create(name='three', post= palettisation)
 person4 = Person.create(name='four',post=picking)
 person5 = Person.create(name='five', post=palettisation)
 
+persons =[person1, person2, person3, person4, person5]
+nb_person = len(persons)
+
 br = Activity.create(name='br', nb_packages= 1, day=date(2023,7,1))
 cd = Activity.create(name='cd', nb_packages= 8, day=date(2023,7,1))
