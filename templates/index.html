@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="description">
+	<h1>Bienvenue sur l'outil de planification CLR!</h1>
+	<p>Veuillez saisir le nombre de colis à expédier </p>
+    <form action="/result" method='POST'>
+    <input name="nb de colis" autocomplete="off" autofocus="nb de colis" placeholder="Nombre de colis à expédier" type="number" required min="0">
+    <select name="période de l'année">
+        {% for month in entry %}
+        <option value={{month}}>{{month}}</option>
+        {% endfor %}
+    </select>
+
+            <input class="btn btn-primary" type="submit" value="Confirmer" style="border:1px solid #FFA500;
+    background:#FFA500;
+    border-radius: 0;
+    color:#fff;">
+
+
+</form>
+
+</div>
+
+
+
+{% endblock %}
