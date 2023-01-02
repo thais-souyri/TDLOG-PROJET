@@ -46,3 +46,9 @@ person5 = Person.create(name='five', post=palettisation, avaibility=True)
 
 br = Activity.create(name='br', nb_packages=1, nb_article_packages=2.3,  day=date(2023,  7, 1))
 cd = Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
+
+persons =[person1, person2, person3, person4, person5]
+nb_person = len(persons)
+
+br = Activity.create(name='br', nb_packages= 1, day=date(2023,7,1))
+cd = Activity.create(name='cd', nb_packages= 8, day=date(2023,7,1))
