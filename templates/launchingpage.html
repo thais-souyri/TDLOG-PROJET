@@ -3,20 +3,26 @@
 <div class="description">
     <h1>Bienvenue sur l'outil de planification CLR!</h1>
     <p>Veuillez importer les données </p>
-    <form action="/index" method='POST'>
+    <form action="/index" method='POST' enctype="multipart/form-data">
 
         <div>
-    <input type="file" id="data" name="data"
-          accept=".doc, .docs, .pdf">
-  </div>
-  <div>
-    <input class="btn btn-primary" type="submit" value="Confirmer" style="border:1px solid #FFA500;
-    background:#FFA500;
+            <div>
+                <input type="file" id="data" name="data"
+                       accept=".doc, .docs, .pdf"
+                       multiple>
+
+
+
+
+                <input class="btn btn-primary" type="submit" value="Confirmer" style="border:1px solid #e96a19;
+    background:#e96a19;
     border-radius: 0;
     color:#fff;">
-  </div>
+            </div>
+        </div>
 
 
+    </form>
     </form>
 
 </div>
