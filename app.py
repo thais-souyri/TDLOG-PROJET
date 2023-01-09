@@ -5,13 +5,18 @@ app = Flask(__name__)
 
 
 @app.route("/")
+def launching():
+    return render_template("launchingpage.html")
+
+
+@app.route("/index", methods=["POST"])
 def index():
     return render_template("index.html", entry=MONTHS)
 
 
 
 @app.route("/result", methods=["POST"])
-def result2():
+def result():
     return render_template("result.html", days=DAYS, posts=POSTS,
                            planning=PLANNING_EXAMPLE)
 
