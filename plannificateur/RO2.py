@@ -75,5 +75,3 @@ def main(nb_packages, month, activity_field):
 (nb_pakages, month, activity_field) = (0,"janvier",0)
 
 (planning,nb_interim)= main(nb_pakages, month, activity_field)
-
-
