@@ -1,5 +1,6 @@
 import data
 import database
+import tools
 
 def time_needed_post(nb_packages, activity_field,post):
     time_needed = nb_packages * database.post_time[activity_field - 1][post.index]
@@ -10,7 +11,7 @@ def time_needed_post(nb_packages, activity_field,post):
 def main(nb_packages, month, activity_field):
     planning = {}
     for j in range(0, 7):
-        day = database.week[j]
+        day = data.week[j]
         planning["{}".format(day)] = {}
         for k in range(0, 3):
             team = database.team[k]
