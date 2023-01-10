@@ -1,14 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="description">
-	<h1>Veuillez saisir le nombre de colis à expédier</h1>
-    <form action="/result" method='POST'>
-    <input name="nb de colis" autocomplete="off" autofocus="nb de colis" placeholder="Nombre de colis à expédier" type="number" required min="0">
-    <select name="période de l'année">
-        {% for month in entry %}
-        <option value={{month}}>{{month}}</option>
-        {% endfor  %}
-    </select>
+        <h1>Veuillez saisir le nombre de colis à expédier</h1>
+        <form action="/result" method='POST'>
+            <input name="nb de colis" autocomplete="off" autofocus="nb de colis"
+                   placeholder="Nombre de colis à expédier" type="number" required min="0">
+            <select name="période de l'année">
+                {% for month in entry %}
+                <option value={{month}}>{{month}}</option>
+                {% endfor %}
+            </select>
 
             <input class="btn btn-primary" type="submit" value="Confirmer" style="border:1px solid #e96a19;
     background:#e96a19;
@@ -16,10 +17,8 @@
     color:#fff;">
 
 
-</form>
-
+        </form>
 </div>
-
 
 
 {% endblock %}
