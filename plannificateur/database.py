@@ -1,7 +1,8 @@
 from peewee import*
 from datetime import date
+import csv
 
-db = SqliteDatabase('people.db')
+db = SqliteDatabase('firm.db')
 
 
 class Person(Model):
@@ -36,17 +37,54 @@ class Activity(Model):
     name = CharField()
     nb_article_packages = FloatField()
     nb_packages = IntegerField()
-    day = DateField()
+    week_number = IntegerField()
 
     class Meta:
         database = db
 
 
-
 db.connect()
 db.create_tables([Person, Post, Activity])
 
-def create_table():
+
+# Import des données depuis le fichier CSV
+path = "chemin/vers/fichier.csv"
+
+
+def create_table_post(path):
+    with open(path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            Post.create(name=row['name'], time=row['time'], index=row['index'])
+    return()
+
+
+def create_table_person(path):
+    with open(path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            Person.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0)
+    return()
+
+
+def create_table_activity(path):
+    with open(path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            Activity.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0)
+    return()
+
+
+def create_table_skill(path):
+    with open(path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            Skill.create(operator=row['operator'], post=row['post'])
+    return()
+
+
+
+def create_table1():
     picking = Post.create(name='picking', time=2, index=1)
     packaging = Post.create(name='packaging', time=1, index=2)
     palletization = Post.create(name='palletization', time=3, index=3)
