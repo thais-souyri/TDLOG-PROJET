@@ -1,21 +1,16 @@
-
 {% extends "layout.html" %}
 {% block body %}
 
 <div class="description">
     <h1>Bienvenue sur l'outil de planification CLR!</h1>
     <p>Veuillez importer les données </p>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
+    <form action="/login" method="POST">
+        <input type="username" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit" value="Log in">
     </form>
 
 </div>
-
-
-
-
-
 
 
 {% endblock %}

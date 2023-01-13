@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="description">
-        <h1>Veuillez saisir le nombre de colis à expédier</h1>
-        <form action="/result" method='POST'>
+    <h1>Veuillez saisir le nombre de colis à expédier</h1>
+    <form action="/result" method='POST'>
+        <form method=post enctype=multipart/form-data>
             <input name="nb de colis" autocomplete="off" autofocus="nb de colis"
                    placeholder="Nombre de colis à expédier" type="number" required min="0">
             <select name="période de l'année">
@@ -10,14 +11,19 @@
                 <option value={{month}}>{{month}}</option>
                 {% endfor %}
             </select>
+            <p>Veuillez importer les données </p>
+            <input type=file name=file>
+            <input type=submit value=Upload>
 
             <input class="btn btn-primary" type="submit" value="Confirmer" style="border:1px solid #e96a19;
     background:#e96a19;
     border-radius: 0;
     color:#fff;">
 
-
         </form>
+    </form>
+
+
 </div>
 
 
