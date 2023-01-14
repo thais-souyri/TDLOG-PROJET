@@ -1,61 +1,84 @@
 {% extends "layout.html" %}
 {% block body %}
 
+
 <div class="description">
+    <h1 id="equipe"> Notre équipe </h1>
     <section class="service">
-        <h1 id="equipe"> Notre équipe </h1>
         <div id="services">
+
+
             <div class="box">
                 <img src=
-                            "static/photo_adeline.jpg"
+                             "static/photo_adeline.jpg"
                      alt="picture goes here">
-
                 <p class="center">
                     <a href="" style="text-decoration:none;color:black;
-        font-weight:bold;font-family: 'Langar', cursive;">
+        font-weight:bold;font-family: 'Arial', cursive;"> Responsable web
                     </a>
                 </p>
-                <p style="font-family: sans-serif">Adeline Baillard </p>
+
+                <p style="font-family: sans-serif"> Adeline Baillard </p>
             </div>
             <div class="box">
                 <img src=
-                           ""
+                             "static/photo_elo.jpg"
                      alt="picture goes here">
-
                 <p class="center">
                     <a href="" style="text-decoration:none;color:black;
-        font-weight:bold;font-family: 'Langar', cursive;">
+        font-weight:bold;font-family: 'Arial', cursive;"> Responsable database
                     </a>
                 </p>
 
-                <p style="font-family: sans-serif ">Eloise Rolland</p>
+                <p style="font-family: sans-serif"> Eloise Rolland</p>
             </div>
             <div class="box">
                 <img src=
-                             ""
+                             "static/photo_thais.jpg"
                      alt="picture goes here">
-                <br>
+
                 <p class="center">
                     <a href="" style="text-decoration:none;color:black;
-           font-weight:bold;font-family: 'Langar', cursive;">
-
+        font-weight:bold;font-family: 'Arial', cursive;"> Responsable RO
                     </a>
                 </p>
-                <p style="font-family: sans-serif ">Thais Souyri</p>
+                <p style="font-family: sans-serif"> Thais Souyri </p>
+
 
             </div>
         </div>
 
-    </section>
 
 </div>
 
+</section>
+
+<h1 id="equipe"> Notre équipe </h1>
+<h1 id="fin">Elèves en deuxième année en génie industriel à l'Ecole des Ponts Paristech</h1>
+<img src="static/logo_ponts.png" id="ponts" width="80" height="80" class="img-rounded">
 <style>
-    #equipe{
+    #equipe {
         text-align: center;
         color: #e96a19;
     }
 
+</style>
+
+<style>
+    #fin {
+        position: absolute;
+        left: 50%; /* à 50%/50% du parent référent */
+        transform: translate(-50%, -50%); /* décalage de 50% de sa propre taille */
+        bottom: 70px;
+        font-family: Arial;
+        font-size: large;
+    }
+
+    #ponts{
+        position: absolute;
+        bottom:5px;
+        right:720px;
+    }
 </style>
 
 {% endblock %}

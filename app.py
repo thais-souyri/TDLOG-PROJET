@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
+from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
+import pdfkit
 from werkzeug.utils import secure_filename
 from plannificateur.constants import *
 import os
@@ -42,10 +43,6 @@ def upload_file():
 @app.route('/us')
 def us():
     return render_template('us.html')
-
-@app.route('/uploads/<name>')
-def download_file(name):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
 @app.route("/")
 def launching():
@@ -97,6 +94,20 @@ def vol():
 def result():
     return render_template("result.html", days=DAYS, posts=POSTS,
                            planning=PLANNING_EXAMPLE)
+
+
+#A voir l'utilité de cette fonction: on peut imprimer directment à l'aide du navigateur
+@app.route("/")
+def convert_to_pdf():
+    name = "planning"
+    html = render_template(
+        "result.html",
+        name=name)
+    pdf = pdfkit.from_string(html, False)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+
 
 
 if __name__ == "__main__":
