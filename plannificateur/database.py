@@ -45,7 +45,7 @@ class Activity(Model):
 
 
 db.connect()
-db.create_tables([Person, Post, Activity])
+db.create_tables([Person, Post, Skill, Activity])
 
 
 def create_table_post(path):
@@ -79,6 +79,10 @@ def create_table_skill(path):
             Skill.create(operator=row['operator'], post=row['post'])
     return()
 
+
+create_table_person('person.csv')
+create_table_post('post.csv')
+create_table_skill('skill.csv')
 
 
 def create_table1():
