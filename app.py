@@ -3,20 +3,42 @@ import pdfkit
 from werkzeug.utils import secure_filename
 from plannificateur.constants import *
 import os
-from sqlalchemy.orm import sessionmaker
+
 from plannificateur.tabledef import *
-engine = create_engine('sqlite:///tutorial.db', echo=True)
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from flask_wtf import *
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length, ValidationError
 
 UPLOAD_FOLDER = '/Users/adeli/OneDrive'
 ALLOWED_EXTENSIONS = {'csv', 'txt'}
 
 app = Flask(__name__)
+db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/adeli/OneDrive/Bureau/Ponts2A/TDLOG/Projet/TDLOG-PROJET/database2.db'
+app.config['SECRET_KEY'] = 'secret_key'
+
+
+class User2(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    password = db.Column(db.String(80), nullable=False)
+
+
+class RegisterForm(FlaskForm):
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder":"Username"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
+    submit = SubmitField("Register")
+
+
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 def allowed_file(filename):
     return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -44,39 +66,20 @@ def upload_file():
 def us():
     return render_template('us.html')
 
+
 @app.route("/")
 def launching():
     return render_template("launchingpage.html")
 
-@app.route('/')
-def home():
-    #if not session.get('logged_in'):
-        #return render_template('launchingpage.html')
-    #else:
-        return redirect(url_for('index'))
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
 
-@app.route('/login', methods=['POST'])
-def do_admin_login():
-    POST_USERNAME = str(request.form['username'])
-    POST_PASSWORD = str(request.form['password'])
-
-    Session = sessionmaker(bind=engine)
-    s = Session()
-    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
-    result = query.first()
-    if result:
-        session['logged_in'] = True
-    else:
-        flash('wrong password!')
-    return home()
-
-
-@app.route("/logout")
-def logout():
-    session['logged_in'] = False
-    return home()
-
+@app.route("/register")
+def register():
+    return render_template("register.html")
 
 
 @app.route("/index")
@@ -96,7 +99,7 @@ def result():
                            planning=PLANNING_EXAMPLE)
 
 
-#A voir l'utilité de cette fonction: on peut imprimer directment à l'aide du navigateur
+# A voir l'utilité de cette fonction: on peut imprimer directment à l'aide du navigateur
 @app.route("/")
 def convert_to_pdf():
     name = "planning"
@@ -107,7 +110,6 @@ def convert_to_pdf():
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
     response.headers["Content-Disposition"] = "inline; filename=output.pdf"
-
 
 
 if __name__ == "__main__":
