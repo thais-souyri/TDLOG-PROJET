@@ -1,6 +1,7 @@
 from peewee import*
 from datetime import date
 import csv
+import pandas as pd
 
 db = SqliteDatabase('firm.db')
 
@@ -47,41 +48,33 @@ db.connect()
 db.create_tables([Person, Post, Activity])
 
 
-# Import des données depuis le fichier CSV
-path = "chemin/vers/fichier.csv"
-
-
 def create_table_post(path):
-    with open(path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
+    with open(path, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
         for row in reader:
-            print(row)
-            #Post.create(name=row['name'], time=row['time'], index=row['index'])
+            Post.create(name=row['name'], time=row['time'], index=row['index'])
     return()
 
 
-create_table_post('posts.csv')
-
-
 def create_table_person(path):
-    with open(path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
+    with open(path, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
         for row in reader:
             Person.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0)
     return()
 
 
 def create_table_activity(path):
-    with open(path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
+    with open(path, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
         for row in reader:
             Activity.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0)
     return()
 
 
 def create_table_skill(path):
-    with open(path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
+    with open(path, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
         for row in reader:
             Skill.create(operator=row['operator'], post=row['post'])
     return()
@@ -113,3 +106,4 @@ def create_table1():
     Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
 
 db.close()
+
