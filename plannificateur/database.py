@@ -106,5 +106,10 @@ def create_table1():
     Activity.create(name='br', nb_packages=1, nb_article_packages=2.3,  day=date(2023,  7, 1))
     Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
 
+
+
+create_table_person('person.csv')
+create_table_post('post.csv')
+create_table_skill('skill.csv')
 db.close()
 
