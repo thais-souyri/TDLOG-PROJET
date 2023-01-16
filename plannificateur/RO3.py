@@ -10,12 +10,18 @@ def main (activity_field, nb_packages):
     planning = tools.dict_creation()
     nb_person = 0
     nb_interim = 0
+    nb_team = [2 for i in range(0,6)]
     for post in database.Post.select() :
         time_needed = tools.time_needed_post(nb_packages, activity_field, post.name)
         time_needed_day = []
+        if time_needed//12 > 7 * data.nb_max_team:
+            nb_day_more_team = (time_needed% 6 * data.nb_max_team)//7 + 1
+            for i in range(0,nb_day_more_team):
+                nb_team[i] = 3
         for i in range(0, 6):
-            time_needed_day.append(time_needed//6)
-        time_needed = time_needed%6
+            time_needed_day.append([time_needed // 6 * nb_team[i] for j in range(0,nb_team[i])])
+        for time in time_needed_day:
+            time_needed -= time
         while time_needed > 0 :
             d = rd.randint(0,5)
             h = rd.randrange(0,time_needed)
