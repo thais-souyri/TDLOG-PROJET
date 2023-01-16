@@ -2,23 +2,25 @@ import os
 
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response
 from flask_bcrypt import Bcrypt
-from flask_login import login_user, LoginManager, login_required, current_user
+from flask_login import login_user, LoginManager, login_required, current_user, logout_user, UserMixin
 from peewee import *
 # import pdfkit
 from werkzeug.utils import secure_filename
 
 from plannificateur.constants import *
+from plannificateur.RO3 import *
 
-UPLOAD_FOLDER = '/Users/adeli/OneDrive'
+
 ALLOWED_EXTENSIONS = {'csv', 'txt'}
 
 login_manager = LoginManager()
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+login_manager = LoginManager()
 login_manager.init_app(app)
 app.secret_key = 'your_secret_key'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 # base de données pour les utilisateurs
 DATABASE = 'database2.db'
@@ -89,7 +91,7 @@ def register():
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         # store the user in the database
         User.create(username=username, password=hashed_password)
-        return redirect('/login')
+        return redirect('/index')
     return render_template('register.html')
 
 
@@ -105,10 +107,22 @@ def login():
                 login_user(user)
                 return redirect('/index')
             else:
-                error = 'Incorrect password'
+                return 'Incorrect password'
         except User.DoesNotExist:
-            error = 'Incorrect username'
+                return 'Incorrect username'
     return render_template('login.html')
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return "You must be logged in to access this page."
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -118,7 +132,7 @@ def upload_page():
     pass  # TODO
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -149,6 +163,7 @@ def launching():
 
 
 @app.route("/index", methods=['POST', 'GET'])
+@login_required
 def index():
     return render_template("index.html", entry=MONTHS)
 
