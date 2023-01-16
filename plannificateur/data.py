@@ -13,3 +13,6 @@ team = ["matin", "après-midi", "nuit"]
 post_time_d2 = [25.7, 48, 10.3, 18, 16, 10.6]
 post_time_d1 = [46.8, 72, 14.4, 26.7, 37.9, 22.5]
 post_time = [post_time_d1, post_time_d2]
+nb_max_team = 50
+
+max_height_database = 0
