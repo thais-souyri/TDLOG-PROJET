@@ -52,3 +52,4 @@ class RandomSolver (BaseKSolve):
     def solve (nb_package, month, activity_field):
 
 
+

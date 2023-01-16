@@ -18,3 +18,14 @@ def time_needed_post(nb_packages, activity_field,post):
     if post.index < 4:
         time_needed = time_needed * activity_field.nb_article_package
     return time_needed
+
+def persons_available():
+    persons_available = database.Person.select().where(database.Person.nb_hour_day > 0 & database.Person.nb_hour_week > 0)
+    return persons_available
+
+def need_interim():
+    persons = persons_available()
+    need = False
+    if len(persons) == 0 :
+        need = True
+    return need

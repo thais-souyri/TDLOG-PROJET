@@ -1,24 +1,22 @@
 import RO
-
+#import RO2
+#import RO4
+#import solver
 import data
+import database
 
-print('Veuillez entrer le nombre de colis à expédier dans la semaine: ')
-nb_package = input()
 
-print("Veuillez entrer le secteur d'activité: ")
-print('1. C-discount')
-print('2. BR')
-activity_field_index = input()
+def main(nb_packages,activity_field):
+    if len(database.Skill) < data.max_height_database:
+        (planning, nb_interim, nb_person) = planning(nb_packages, activity_field)
+    else :
+        (planning, nb_interim, nb_person) = RO.planning(nb_packages, activity_field)
+        #(planning2, nb_interim2, nb_person2) = RO2.planning(nb_packages, activity_field)
+        #if nb_person2 < nb_person :
+            #(planning, nb_interim, nb_person) = (planning2, nb_interim2, nb_person2)
+        #(planning2, nb_interim2, nb_person2) = RO4.planning(nb_packages, activity_field)
+        #if nb_person2 < nb_person :
+            #(planning, nb_interim, nb_person) = (planning2, nb_interim2, nb_person2)
+    return (planning, nb_interim, nb_person)
 
-print("Veuillez indiquer le mois de l'année:")
-month = input()
-
-(planning, nb_interim) = RO.main(nb_package, month, activity_field_index)
-
-print("Le nombre d'intérimaires nécessaire sera de {}".format(nb_interim))
-
-print("Le planning d'organisation de la semaine est le suivant :")
-
-for i in range(0, 6):
-    print("{}".format(data.week[i]))
-    print(planning["{}".format(data.week[i])])
+print(main(100,2))
