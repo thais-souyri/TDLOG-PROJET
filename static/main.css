@@ -3,64 +3,133 @@ body {
     margin: 0;
     background: #f2f6e9;
 }
+
 .navbar {
-    background:#343a40;
+    background: #343a40;
 }
+
 .nav-link,
 .navbar-brand {
     color: #fff;
     cursor: pointer;
 }
+
 .nav-link {
     margin-right: 1em !important;
 
 }
+
 .nav-link:hover {
     color: #000;
 }
+
 .navbar-collapse {
     justify-content: flex-end;
 }
 
 
-
-
-
-
 .description {
-	left: 50%;
-	position: absolute;
-	top: 45%;
-	transform: translate(-50%, -55%);
-	text-align: center;
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
 }
+
 .description h1 {
-	color: #e96a19;
-	text-align: center;
+    color: #e96a19;
+    text-align: center;
 }
+
 .description p {
-	color: #000000;
-	font-size: 1.3rem;
-	line-height: 1.5;
+    color: #000000;
+    font-size: 1.3rem;
+    line-height: 1.5;
 }
 
 
 .description a:hover {
-	border:1px solid #e96a19;
-    background:#e96a19;
-    color:#000;
+    border: 1px solid #e96a19;
+    background: #e96a19;
+    color: #000;
 }
 
 
 .container {
-	left: 50%;
-	position: absolute;
-	top: 45%;
-	transform: translate(-50%, -55%);
-	text-align: center;
-}
-.container h1 {
-	color: #e96a19;
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
 }
 
+.container h1 {
+    color: #e96a19;
+}
+
+
+.bg-size-half {
+    background-size: 50%;
+}
+
+.bg-position-top {
+    background-position: top;
+}
+
+
+
+
+
+#service {
+    margin: 34px;
+    display: flex;
+}
+
+#service .box {
+    padding: 100px;
+    margin: 3px 6px;
+    border-radius: 28px;
+}
+
+#service .box img {
+    margin-top: 10px;
+    height: 150px;
+    margin: auto;
+    display: block;
+    border-radius: 200px;
+}
+
+#service .box p {
+
+    font-family: sans-serif;
+    text-align: center;
+}
+
+#services {
+    margin: 34px;
+    display: flex;
+}
+
+#services .box {
+
+    padding: 100px;
+    margin: 3px 6px;
+    border-radius: 28px;
+}
+
+#services .box img {
+    margin-top: 10px;
+    height: 150px;
+    margin: auto;
+    display: block;
+    border-radius: 100px;
+}
+
+#services .box p {
+
+    font-family: sans-serif;
+    text-align: center;
+}
+
+'''insérer texte en bas de page '''
 
