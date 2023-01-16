@@ -76,13 +76,10 @@ def create_table_skill(path):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            Skill.create(operator=row['operator'], post=row['post'])
+            posts = row["post"].split(" ")
+            for post in posts:
+                Skill.create(operator=row['operator'], post=post)
     return()
-
-
-create_table_person('person.csv')
-create_table_post('post.csv')
-create_table_skill('skill.csv')
 
 
 def create_table1():

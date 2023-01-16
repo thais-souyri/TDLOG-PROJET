@@ -1,10 +1,9 @@
 operator,post
-1, picking
-3, picking
-5, picking
-2, packaging
-3, packaging
+1, picking palletization
+3, picking packaging
+5, picking palletization
+2, packaging palletization
 4, palletization
-5, palletization
-2, palletization
-1, palletization
+
+
+
