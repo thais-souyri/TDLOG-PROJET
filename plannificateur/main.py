@@ -7,7 +7,10 @@ import database
 
 
 def main(nb_packages,activity_field):
-    if len(database.Skill) < data.max_height_database:
+    nb_skill = 0
+    for skill in database.Skill.select():
+        nb_skill +=1
+    if nb_skill < data.max_height_database:
         (planning, nb_interim, nb_person) = planning(nb_packages, activity_field)
     else :
         (planning, nb_interim, nb_person) = RO.planning(nb_packages, activity_field)
@@ -19,4 +22,3 @@ def main(nb_packages,activity_field):
             #(planning, nb_interim, nb_person) = (planning2, nb_interim2, nb_person2)
     return (planning, nb_interim, nb_person)
 
-print(main(100,2))

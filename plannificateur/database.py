@@ -80,10 +80,6 @@ def create_table_skill(path):
     return()
 
 
-create_table_person('person.csv')
-create_table_post('post.csv')
-create_table_skill('skill.csv')
-
 
 def create_table1():
     picking = Post.create(name='picking', time=2, index=1)
@@ -111,3 +107,6 @@ def create_table1():
 
 db.close()
 
+#create_table_person('person.csv')
+#create_table_post('post.csv')
+#create_table_skill('skill.csv')

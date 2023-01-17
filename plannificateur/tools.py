@@ -29,3 +29,24 @@ def need_interim():
     if len(persons) == 0 :
         need = True
     return need
+
+def nb_person():
+    nb_person = 0
+    for person in database.Person.select():
+        nb_person += 1
+    return nb_person
+
+def nb_post():
+    nb_post = 0
+    for post in database.Post.select():
+        nb_post += 1
+    return nb_post
+
+def time_needed_day(time_needed_day_team) :
+    time = 0
+    time_needed_day = []
+    for i in range (0,6):
+        for j in range (0,3):
+            time += time_needed_day_team[i][j]
+        time_needed_day. append(time)
+    return time_needed_day
