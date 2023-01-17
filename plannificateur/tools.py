@@ -15,7 +15,7 @@ def dict_creation() :
 
 def time_needed_post(nb_packages, activity_field,post):
     time_needed = nb_packages * database.Post.time[activity_field - 1][post.index]
-    if post.index <= 5 :
+    if post.action_on_article :
         time_needed = time_needed * activity_field.nb_article_package
     return time_needed
 
