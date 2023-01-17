@@ -1,7 +1,8 @@
 from peewee import*
 from datetime import date
 import csv
-import pandas as pd
+
+
 
 db = SqliteDatabase('firm.db')
 

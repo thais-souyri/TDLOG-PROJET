@@ -1,5 +1,5 @@
-import data
-import database
+from plannificateur.data import *
+from plannificateur.database import*
 import tools
 import random as rd
 from peewee import *
