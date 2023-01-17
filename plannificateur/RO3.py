@@ -21,13 +21,13 @@ def main (activity_field, nb_packages):
                 nb_team[i] = 3
         for i in range(0, 6):
             for j in range(0, nb_team[i]):
-            time_needed_day_team[i][j] = time_needed // 6 * 2 + nb_day_more_team
-        if nb_day_more_team ! = 0 :
+                time_needed_day_team[i][j] = time_needed // 6 * 2 + nb_day_more_team
+        if nb_day_more_team != 0 :
             time_needed_day_team[nb_day_more_team - 1 ][2] = time_needed % 6 * 2 + nb_day_more_team
 
 
         for i in range(0,6):
-            for t in range (0,nb_team[i])
+            for t in range (0,nb_team[i]):
                 while time_needed_day_team[i] > 0 :
                     if not tools.need_interim() :
                         qualified = False
@@ -56,6 +56,9 @@ def main (activity_field, nb_packages):
             if person.nb_hour_week < 35 :
                 nb_person += 1
         nb_person += nb_interim
+    print(main(activity_field, nb_packages))
     return (planning,nb_person,nb_interim)
 
-print (main (activity_field, nb_packages))
+nb_packages = 10
+activity_field = 1
+(planning,nb_interim)= main(nb_packages, activity_field)

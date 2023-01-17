@@ -14,8 +14,8 @@ def dict_creation() :
     return planning
 
 def time_needed_post(nb_packages, activity_field,post):
-    time_needed = nb_packages * database.Post.timepost_time[activity_field - 1][post.index]
-    if post.index < 4:
+    time_needed = nb_packages * database.Post.time[activity_field - 1][post.index]
+    if post.index <= 5 :
         time_needed = time_needed * activity_field.nb_article_package
     return time_needed
 
