@@ -1,69 +1,121 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
-import pdfkit
-from werkzeug.utils import secure_filename
-from plannificateur.constants import *
 import os
 
-from plannificateur.tabledef import *
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response
 from flask_bcrypt import Bcrypt
+from flask_login import login_user, LoginManager, login_required, current_user
+from peewee import *
+# import pdfkit
+from werkzeug.utils import secure_filename
+
+from plannificateur.constants import *
 
 UPLOAD_FOLDER = '/Users/adeli/OneDrive'
 ALLOWED_EXTENSIONS = {'csv', 'txt'}
 
-app = Flask(__name__)
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database2.db'
-app.config['SECRET_KEY'] = 'secret_key'
-
 login_manager = LoginManager()
+
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
 login_manager.init_app(app)
-login_manager.login_view = "login"
+app.secret_key = 'your_secret_key'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# base de données pour les utilisateurs
+DATABASE = 'database2.db'
+database = SqliteDatabase(DATABASE)
+
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.get(user_id)  # TODO: charger une instance de User à partir d'une ID user
 
 
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(80), nullable=False)
+@app.before_request
+def before_request():
+    database.connect()
 
 
-class RegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder":"Username"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
-    submit = SubmitField("Register")
-    def validate_username(self, username):
-        existing_user_username = User.query.filter_by(
-            username=username.data).first()
-
-        if existing_user_username:
-            raise ValidationError (
-                "Cet identifiant existe déjà. Veuillez en choisir un autre")
+@app.after_request
+def after_request(response):
+    database.close()
+    return response
 
 
-class LoginForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder":"Username"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
-    submit = SubmitField("Login")
+class BaseModel(Model):
+    class Meta:
+        database = database
 
 
+# the user model specifies its fields (or columns) declaratively, like django
+class User(BaseModel):
+    username = CharField(unique=True)
+    password = CharField()
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return self.is_active
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+
+def create_tables():
+    with database:
+        database.create_tables([User])
+
+
+create_tables()
 
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # hash the password
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # store the user in the database
+        User.create(username=username, password=hashed_password)
+        return redirect('/login')
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        try:
+            user = User.get(User.username == username)
+            # check if the password is correct
+            if bcrypt.check_password_hash(user.password, password):
+                login_user(user)
+                return redirect('/index')
+            else:
+                error = 'Incorrect password'
+        except User.DoesNotExist:
+            error = 'Incorrect username'
+    return render_template('login.html')
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_page():
+    return f"L'utilisateur actuel est {current_user.username}"
+    pass  # TODO
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -83,7 +135,6 @@ def upload_file():
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
             return redirect(url_for('index'))
-            return path
     return render_template("launchingpage.html")
 
 
@@ -97,42 +148,7 @@ def launching():
     return render_template("launchingpage.html")
 
 
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user)
-                return redirect(url_for('index'))
-    return render_template("login.html", form=form)
-
-
-@app.route('/logout', methods=['GET', 'POST'])
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
-
-
-
-@app.route("/register", methods=['GET', 'POST'])
-def register():
-    form = RegisterForm()
-
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
-
-    return render_template("register.html", form=form)
-
-
 @app.route("/index", methods=['POST', 'GET'])
-@login_required
 def index():
     return render_template("index.html", entry=MONTHS)
 
