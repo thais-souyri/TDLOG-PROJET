@@ -24,16 +24,16 @@ def time_needed_post(nb_packages, activity_field,post):
 def time_needed(nb_packages, activity_field,post):
     sum = 0
     for post in database.Post.select():
-        sum += time_needed_post(nb_packages, activity_field,post.name):
+        sum += time_needed_post(nb_packages, activity_field,post.name)
     return post.name
 
 def persons_available():
     persons_available = database.Person.select().where(database.Person.nb_hour_day > 0 & database.Person.nb_hour_week > 0)
     return persons_available
 
-def persons_availbale_post(post):
-    persons_available = persons_available()
-    persons = persons_available.where(database.Skill.operrator == persons_available & database.Skill.post == post)
+def persons_available_post(post):
+    p_a = persons_available()
+    persons = p_a.where(database.Skill.operrator == persons_available & database.Skill.post == post)
     return persons
 
 def need_interim():

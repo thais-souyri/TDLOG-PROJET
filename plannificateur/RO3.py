@@ -1,12 +1,11 @@
 import data
 import database
 import tools
-import random as rd
 from peewee import *
 
 
 
-def main (activity_field, nb_packages):
+def planning (nb_packages, activity_field):
     planning = tools.dict_creation()
     nb_person = 0
     nb_interim = 0
@@ -30,13 +29,8 @@ def main (activity_field, nb_packages):
             for t in range (0,nb_team[i]):
                 while time_needed_day_team[i] > 0 :
                     if not tools.need_interim() :
-                        qualified = False
-                        while not qualified :
-                            persons_available = tools.persons_available().order_by(fn.Random())
-                            person = persons_available.get()
-                            for skill in database.Skill.select():
-                                if skill.operator == person.index and skill.post == post.index :
-                                    qualified = True
+                        persons_available = tools.persons_available_post().order_by(fn.Random())
+                        person = persons_available.get()
                         if person.nb_hour_day < time_needed_day[i] :
                             person.nb_hour_day = 0
                             person.nb_hour_week -= person.nb_hour_day
@@ -57,8 +51,8 @@ def main (activity_field, nb_packages):
                 nb_person += 1
         nb_person += nb_interim
     print(main(activity_field, nb_packages))
-    return (planning,nb_person,nb_interim)
+    return (planning, nb_interim, nb_person)
 
 nb_packages = 10
 activity_field = 1
-(planning,nb_interim)= main(nb_packages, activity_field)
+(planning,nb_interim)= planning(nb_packages, activity_field)
