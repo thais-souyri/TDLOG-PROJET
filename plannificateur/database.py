@@ -21,6 +21,7 @@ class Post(Model):
     name = CharField(unique=True)
     time = FloatField()
     index = IntegerField()
+    action_on_article = BooleanField()
     firm_name = CharField
 
     class Meta:
