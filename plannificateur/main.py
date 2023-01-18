@@ -11,6 +11,7 @@ def main(nb_packages,activity_field):
     if tools.time_needed(nb_packages, activity_field) > 6 * 7 * data.nb_max_team :
         return "La livraison ne peut être effectuée, il y a trop d'articles"
 
+
     nb_skill = 0
     for skill in database.Skill.select():
         nb_skill +=1
