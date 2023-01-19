@@ -13,14 +13,14 @@ def nb_operators(firm, nb_pakages, nb_article_packages, post):
 def nb_teams_needed(firm, nb_packages, nb_articles_package):
     nb_team = [2 for i in range(0, 6)]
     time_available = sum(nb_team) * 7 * data.nb_max_team
-    while tools.time_needed() < time_available :
+    while tools.time_needed(firm, nb_packages, nb_articles_package) < time_available :
         for i in range(0,6):
             nb_team[i] = rd.randint(2,3)
     return nb_team
 
 def planning(firm, nb_packages, nb_article_packages):
     planning = tools.dict_creation()
-    nb_teams = nb_teams_needed(nb_packages, nb_article_packages)
+    nb_teams = nb_teams_needed(firm, nb_packages, nb_article_packages)
     tot_interim = 0
     for post in database.Post.select().where(database.Post.firm_name == firm):
         time_needed = tools.time_needed_post()
@@ -40,6 +40,8 @@ def planning(firm, nb_packages, nb_article_packages):
                 tot_interim += nb_interim
     nb_person = tools.total_operators(planning)
     return (planning, tot_interim, nb_person)
+
+planning("a",12,1.8)
 
 
 

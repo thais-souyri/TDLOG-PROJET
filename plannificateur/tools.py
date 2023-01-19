@@ -3,7 +3,7 @@ import database
 
 def dict_creation() :
     planning = {}
-    for j in range(0, 7):
+    for j in range(0, 6):
         day = data.week[j]
         planning["{}".format(day)] = {}
         for k in range(0, 3):
@@ -21,9 +21,9 @@ def time_needed_post(firm, nb_packages, nb_articles_package,post):
         time_needed = time_needed * nb_articles_packages
     return time_needed
 
-def time_needed(firm, nb_packages, nb_articles_package, post):
+def time_needed(firm, nb_packages, nb_articles_package):
     sum = 0
-    for post in database.Post.select().where(database.Person.firm_name == firm):
+    for post in database.Post.select().where(database.Person.firm_name == firm).get():
         sum += time_needed_post(firm,nb_packages, nb_articles_package,post.name)
     return post.name
 
