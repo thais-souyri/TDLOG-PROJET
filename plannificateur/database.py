@@ -55,7 +55,7 @@ def create_table_post(path, firm_name):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            Post.create(name=row['name'], time=row['time'], index=row['index'], firm_name=firm_name)
+            Post.create(name=row['name'], time=row['time'], action_on_article=row['action_on_article'], index=row['index'], firm_name=firm_name)
     return()
 
 
