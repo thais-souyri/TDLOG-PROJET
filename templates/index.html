@@ -14,6 +14,9 @@
                 <option value={{month}}>{{month}}</option>
                 {% endfor %}
             </select>
+            <select name="secteur d'activité">
+                <option value="BR"></option>
+            </select>
             <p></p>
             <label class="form-label" for="customFile"> Info1</label>
             <input type="file" class="form-control" id="customFile1"/>
@@ -32,7 +35,7 @@
         </form>
     </form>
 
-    <a href="{{url_for('logout')}}"> Appuyez ici pour vous déconnecter </a>
+
 
 </div>
 
