@@ -1,7 +1,7 @@
 import RO
-#import RO2
-#import RO4
-#import solver
+import RO2
+import RO4
+import solver
 import data
 import database
 import tools
