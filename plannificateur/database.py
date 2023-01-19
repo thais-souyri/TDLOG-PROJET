@@ -22,7 +22,7 @@ class Post(Model):
     time = FloatField()
     index = IntegerField()
     action_on_article = IntegerField()
-    firm_name = CharField
+    firm_name = CharField()
 
     class Meta:
         database = db
@@ -58,7 +58,7 @@ def create_table_post(path, firm_name):
             Post.create(name=row['name'], time=row['time'], action_on_article=row['action_on_article'], index=row['index'], firm_name=firm_name)
     return()
 
-
+create_table_post('post.csv', 'a')
 def create_table_person(path, firm_name):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)

@@ -28,7 +28,7 @@ def planning(firm, nb_packages, nb_article_packages):
             for j in range(0, 6):
                 day = data.week[j]
                 team = rd.randint(nb_teams[j])
-                nb_operators = nb_operators(nb_pakages, activity_field, post.name)
+                nb_operators = nb_operators(nb_packages, activity_field, post.name)
                 time_needed -= nb_operators * 7
                 planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] = nb_operators_needed(nb_pakages, activity_field,post)
             day = rd.randint(0,6)
