@@ -21,7 +21,7 @@ class Post(Model):
     name = CharField(unique=True)
     time = FloatField()
     index = IntegerField()
-    action_on_article = BooleanField()
+    action_on_article = IntegerField()
     firm_name = CharField
 
     class Meta:
@@ -40,8 +40,8 @@ class Skill(Model):
 class Activity(Model):
     name = CharField()
     nb_article_packages = FloatField()
-    nb_packages = IntegerField()
-    week_number = IntegerField()
+
+
 
     class Meta:
         database = db
@@ -67,11 +67,8 @@ def create_table_person(path, firm_name):
     return()
 
 
-def create_table_activity(path, firm_name):
-    with open(path, 'r') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            Activity.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0, firm_name=firm_name)
+def create_table_activity(firm_name, article_package):
+    Activity.create(name=firm_name,nb_article_packages=article_package)
     return()
 
 
