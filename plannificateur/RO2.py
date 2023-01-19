@@ -2,20 +2,20 @@ import data
 import database
 import tools
 
-def planning(nb_packages, activity_field):
+def planning(firm, nb_packages, nb_articles_package):
     planning = tools.dict_creation()
-    nb_post = tools.nb_post()
+    nb_post = tools.nb_post(firm)
     nb_interim = []
 
     for post in range (0, nb_post):
-        time_needed = tools.time_needed_post(nb_packages, activity_field, post)
+        time_needed = tools.time_needed_post(firm, nb_packages, nb_articles_package, post)
         nb_operators_needed_post = 0
         while time_needed > 0 :
             time_needed = time_needed - 7
             nb_operators_needed_post += 1
 
         nb_operators_post = 0
-        for p in tools.persons_available_post():
+        for p in tools.persons_available_post(firm):
             nb_operators_post += 1
 
         if nb_operators_needed_post > nb_operators_post * 5 :
@@ -50,7 +50,6 @@ def planning(nb_packages, activity_field):
             planning["{}".format(day)]["{}".format(team)]["{}".format(post)] += 1
 
     nb_operators = tools.total_operators()
-    print(planning)
     return (planning, nb_interim, nb_operators)
 
 
