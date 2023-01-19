@@ -1,7 +1,7 @@
 import RO
 import RO2
 import RO4
-import solver
+#import solver
 import data
 import database
 import tools
@@ -16,7 +16,7 @@ def main(firm, nb_packages, nb_articles_package):
     for skill in database.Skill.select().where(database.Skill.firm_name == firm):
         nb_skill +=1
     if nb_skill < data.max_height_database:
-        (planning, nb_interim, nb_person) = planning(firm, nb_packages, nb_articles_package)
+        (planning, nb_interim, nb_person) = solver.planning(firm, nb_packages, nb_articles_package)
     else :
         (planning, nb_interim, nb_person) = RO.planning(firm, nb_packages, nb_articles_package)
         (planning2, nb_interim2, nb_person2) = RO2.planning(firm, nb_packages, nb_articles_package)

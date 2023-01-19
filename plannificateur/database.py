@@ -109,3 +109,7 @@ def create_table1():
 
 db.close()
 
+create_table_post("post.csv", "a")
+create_table_person("person.csv","a")
+create_table_activity("a", 12)
+create_table_skill("skill.csv", "a")
