@@ -5,15 +5,28 @@
     <h1>Page de connexion</h1>
 
     <form method="post" action="/login">
-        <label for="username">Username:</label>
+        <label for="username">Identifiant:</label>
         <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label>
+        <label for="password">Mot de passe:</label>
         <input type="password" id="password" name="password"><br>
-        <input type="submit" value="Login">
+        <input type="submit" value="Se connecter">
     </form>
     <a href="{{url_for('register')}}"> Vous n'avez pas de compte ? Inscrivez-vous  </a><br>
 
 
 </div>
+<img src="static/login.png" id="connexion" width="150" height="150" class="img-rounded">
+
+
+
+<style>
+
+    #connexion {
+        position: absolute;
+        bottom:80px;
+        right:690px;
+    }
+
+</style>
 
 {% endblock %}

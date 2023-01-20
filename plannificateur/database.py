@@ -81,9 +81,9 @@ def create_table_skill(path):
     return()
 
 
-create_table_person('person.csv')
-create_table_post('post.csv')
-create_table_skill('skill.csv')
+create_table_person('plannificateur/person.csv')
+create_table_post('plannificateur/post.csv')
+create_table_skill('plannificateur/skill.csv')
 
 
 def create_table1():

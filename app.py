@@ -1,5 +1,6 @@
 import os
 
+import pdfkit as pdfkit
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, login_required, current_user, logout_user, UserMixin
@@ -7,20 +8,69 @@ from peewee import *
 # import pdfkit
 from werkzeug.utils import secure_filename
 
+
 from plannificateur.constants import *
-from plannificateur.RO3 import *
+#from plannificateur.database import *
+#from plannificateur.RO3 import *
 
 
-ALLOWED_EXTENSIONS = {'csv', 'txt'}
 
-login_manager = LoginManager()
+
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
+login_manager = LoginManager()
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-app.secret_key = 'your_secret_key'
-app.config['UPLOAD_FOLDER'] = 'uploads/'
+
+path = os.getcwd()
+# file Upload
+UPLOAD_FOLDER = os.path.join(path, 'uploads')
+# Make directory if "uploads" folder not exists
+if not os.path.isdir(UPLOAD_FOLDER):
+    os.mkdir(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+ALLOWED_EXTENSIONS = set(['txt', 'csv'])
+
+#pour uploader les fichiers
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+@app.route('/index', methods=['POST','GET'])
+def index():
+    return render_template('index.html')
+
+
+paths=[]
+@app.route('/', methods=['POST'])
+def upload_file():
+    if request.method == 'POST':
+
+        if 'files[]' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+
+        files = request.files.getlist('files[]')
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                path=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(path)
+                paths.append(path)
+        flash('File(s) successfully uploaded')
+
+        #création des bases de données
+        database.create_table_person(paths[0])
+        database.create_table_post(paths[1])
+        database.create_table_skill(paths[2])
+
+        return redirect('/index')
+
 
 # base de données pour les utilisateurs
 DATABASE = 'database2.db'
@@ -77,10 +127,6 @@ def create_tables():
 create_tables()
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -132,24 +178,6 @@ def upload_page():
     pass  # TODO
 
 
-@app.route('/file', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            return redirect("launching")
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(path)
-            return redirect(url_for('index'))
-    return render_template("launchingpage.html")
 
 
 @app.route('/us')
@@ -162,20 +190,19 @@ def launching():
     return render_template("launchingpage.html")
 
 
-@app.route("/index", methods=['POST', 'GET'])
-@login_required
-def index():
-    return render_template("index.html", entry=MONTHS)
 
 
 @app.route("/result", methods=["POST"])
 def result():
+    colis=request.form['nb_colis']
+    pieces=request.form['nb_pieces']
+    #retour=RO3.main(current_user.username,colis, pieces)
     return render_template("result.html", days=DAYS, posts=POSTS,
-                           planning=PLANNING_EXAMPLE)
+                           planning=RETURN_EXAMPLE[0],nb_person=RETURN_EXAMPLE[1], nb_interim=RETURN_EXAMPLE[2])
 
 
-# A voir l'utilité de cette fonction: on peut imprimer directment à l'aide du navigateur
-@app.route("/")
+# A voir l'utilité de cette fonction: on peut imprimer directement à l'aide du navigateur
+@app.route("/pdf")
 def convert_to_pdf():
     name = "planning"
     html = render_template(

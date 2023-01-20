@@ -3,6 +3,10 @@ Day = str
 DayPeriod = str
 PostType = str
 
+
+
+
+
 PLANNING_EXAMPLE: Dict[Day, Dict[DayPeriod, Dict[PostType, int]]] = {'lundi': {
     'matin': {'pickeur rack': 6, 'pickeur etagere': 2, 'operateur skypod': 3, 'agent logistique ventilation': 5,
               'agent logistique conduceteur de ligne emballage': 3, 'agent logistique palettisation': 2},
@@ -46,6 +50,8 @@ PLANNING_EXAMPLE: Dict[Day, Dict[DayPeriod, Dict[PostType, int]]] = {'lundi': {
                        'agent logistique palettisation': 5},
         'nuit': {'pickeur rack': 1, 'pickeur etagere': 5, 'operateur skypod': 7, 'agent logistique ventilation': 0,
                  'agent logistique conduceteur de ligne emballage': 1, 'agent logistique palettisation': 3}}}
+
+RETURN_EXAMPLE=(PLANNING_EXAMPLE,200,50)
 
 DAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
 POSTS = ["pickeur rack", "pickeur etagere", "operateur skypod", "agent logistique ventilation",
