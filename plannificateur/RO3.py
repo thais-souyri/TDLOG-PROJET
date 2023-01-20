@@ -8,7 +8,6 @@ from peewee import *
 def planning (firm, nb_packages, nb_articles_package):
     planning = tools.dict_creation(firm)
     nb_person_working = 0
-    nb_interim = 0
     nb_team = [2 for i in range(0,6)]
     nb_day_more_team = 0
     persons_working = []
@@ -17,7 +16,7 @@ def planning (firm, nb_packages, nb_articles_package):
         time_needed = tools.time_needed_post(firm, nb_packages, nb_articles_package, post.name)
         time_needed_day_team = [[0,0,0] for i in range (0,6)]
         if time_needed//12 > 7 * data.nb_max_team:
-            nb_day_more_team = (time_needed% 7 * data.nb_max_team)//6 + 1
+            nb_day_more_team = (time_needed% (7 * data.nb_max_team))//6 + 1
             for i in range(0,nb_day_more_team):
                 nb_team[i] = 3
         for i in range(0, 6):
