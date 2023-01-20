@@ -16,6 +16,11 @@ class Person(Model):
     class Meta:
         database = db
 
+    def not_available (self):
+        bool = False
+        if Person.nb_hour_week >= 35 or Person.nb_hour_day >= 7:
+            bool = True
+        return bool
 
 class Post(Model):
     name = CharField(unique=True, primary_key=True)

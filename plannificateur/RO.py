@@ -3,13 +3,12 @@ import tools
 import database
 import random as rd
 
-def nb_operators(firm, nb_pakages, nb_article_packages, post):
-    persons_available = tools.persons_available(firm)
+def nb_operators(firm, post):
+    persons_available = database.Person.select().where(database.Person.nb_hour_day < 7).where(database.Person.nb_hour_week < 35).where(database.Person.firm_name == firm)
     sum = 0
-    for person in persons_available.select():
+    for person in persons_available.select().join(database.Skill).where(database.Skill.operator == persons_available).where(database.Skill.post == post).where(database.Skill.firm_name == firm):
         sum +=1
     return rd.randint(0,sum)
-
 
 def nb_teams_needed(firm, nb_packages, nb_articles_package):
     nb_team = [2 for i in range(0, 6)]
@@ -33,22 +32,22 @@ def planning(firm, nb_packages, nb_articles_package):
             for j in range(0, 6):
                 day = data.week[j]
                 team = data.team[rd.randint(0,nb_teams[j])]
-                nb_operator = nb_operators(firm, nb_packages, nb_articles_package, post.name)
-                time_needed -= nb_operator * 7
-                planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] = nb_operator
-            if time_needed > 0:
-                index_day = rd.randint(0,5)
-                day = data.week[index_day]
-                team = data.team[rd.randint(0,nb_teams[index_day]-1)]
-                nb_interim = rd.randint(0,time_needed//7)
-                if nb_interim + planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] < data.nb_max_team:
-                    planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += nb_interim
-                    time_needed -= nb_interim*7
-                    tot_interim += nb_interim
+                nb = nb_operators(firm, post)
+                time_needed -= nb * 7
+                planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += nb_operators(firm, post)
+                if time_needed > 0:
+                    day_index = rd.randint(0,5)
+                    day = data.week[day_index]
+                    team = data.team[rd.randint(0,nb_teams[day_index]-1)]
+                    nb_interim = rd.randint(0, (time_needed//7)+1)
+                    if nb_interim + planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] < data.nb_max_team:
+                        planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += nb_interim
+                        time_needed -= nb_interim*7
+                        tot_interim += nb_interim
     nb_person = tools.total_operators(firm, planning)
     return (planning, tot_interim, nb_person)
 
-planning('a',12,1.8)
+print(planning("a",500,1.8))
 
 
 
