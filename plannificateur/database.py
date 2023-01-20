@@ -47,7 +47,7 @@ class Activity(Model):
         database = db
 
 
-db.connect()
+
 db.create_tables([Person, Post, Skill, Activity])
 
 
@@ -114,7 +114,7 @@ def create_table1():
     Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
 
 
-db.close()
+
 
 
 #create_table_post("post.csv", "a")

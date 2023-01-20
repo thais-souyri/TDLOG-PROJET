@@ -14,6 +14,7 @@ import plannificateur.database
 from plannificateur.constants import *
 #from plannificateur.database import *
 #from plannificateur.RO3 import *
+import plannificateur.database
 
 
 
@@ -44,6 +45,17 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@app.route('/create-firm-name')
+def create_firm_name():
+    if current_user.is_authenticated:
+        user = .get(username=current_user.username)
+        user.firm_name = "My Firm"
+        user.save()
+        return "Firm name created"
+    else:
+        return "Not logged in"
+
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -61,24 +73,22 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('download_file', name=filename))
+
+    # création des bases de données
+    file_name1 = "person.csv"
+    file_path1 = os.path.join(app.config['UPLOAD_FOLDER'], file_name1)
+    plannificateur.database.create_table_person(file_path1, firm_name)
+
+    file_name2 = "post.csv"
+    file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
+    plannificateur.database.create_table_post(file_path2, 'b')
+    file_name3 = "skill.csv"
+    file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], file_name3)
+    plannificateur.database.create_table_skill(file_path3, current_user.username)
+
     return render_template('upload.html')
 
 
-#création des bases de données
-
-
-file_name1 = "person.csv"
-file_path1 = os.path.abspath(file_name1)
-plannificateur.database.create_table_person(file_path1)
-
-file_name2 = "post.csv"
-file_path2 = os.path.abspath(file_name2)
-plannificateur.database.create_table_post(file_path2)
-
-
-file_name3 = "skill.csv"
-file_path3 = os.path.abspath(file_name3)
-plannificateur.database.create_table_skill(file_path3)
 
 
 @app.route('/uploads/<name>')
@@ -119,7 +129,7 @@ class BaseModel(Model):
         database = database
 
 
-# the user model specifies its fields (or columns) declaratively, like django
+# the user model specifies its fields (or columns) declaratively
 class User(BaseModel):
     username = CharField(unique=True)
     password = CharField()
