@@ -9,7 +9,7 @@ from peewee import *
 from werkzeug.utils import secure_filename
 
 
-import plannificateur.database
+from plannificateur import database
 
 from plannificateur.constants import *
 #from plannificateur.database import *
@@ -48,7 +48,7 @@ def allowed_file(filename):
 @app.route('/create-firm-name')
 def create_firm_name():
     if current_user.is_authenticated:
-        user = plannificateur.User.get(username=current_user.username)
+        user = database.User.get(username=current_user.username)
         user.firm_name = "My Firm"
         user.save()
         return "Firm name created"
@@ -74,20 +74,27 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('download_file', name=filename))
 
+
+    return render_template('upload.html')
+    return redirect('/create')
+
+
+
+@app.route('/create', methods=['GET', 'POST'])
+@login_required
+def create_tables_from_files():
     # création des bases de données
     file_name1 = "person.csv"
     file_path1 = os.path.join(app.config['UPLOAD_FOLDER'], file_name1)
-    plannificateur.create_table_person(file_path1, current_user.username)
+    database.create_table_person(file_path1, current_user.username)
 
     file_name2 = "post.csv"
     file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
-    plannificateur.database.create_table_post(file_path2, 'b')
+    database.create_table_post(file_path2, 'b')
     file_name3 = "skill.csv"
     file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], file_name3)
-    plannificateur.database.create_table_skill(file_path3, current_user.username)
-
+    database.create_table_skill(file_path3, current_user.username)
     return render_template('upload.html')
-
 
 
 
@@ -108,21 +115,17 @@ def index():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return plannificateur.User.get(user_id)  # TODO: charger une instance de User à partir d'une ID user
-
+    return database.User.get(user_id)  # TODO: charger une instance de User à partir d'une ID user
 
 @app.before_request
 def before_request():
-    plannificateur.db.connect()
+    database.db.connect()
 
 
 @app.after_request
 def after_request(response):
-    plannificateur.db.close()
+    database.db.close()
     return response
-
-
-
 
 # the user model specifies its fields (or columns) declaratively
 
@@ -136,8 +139,8 @@ def register():
         # hash the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         # store the user in the database
-        plannificateur.User.create(username=username, password=hashed_password)
-        return redirect('/index')
+        database.User.create(username=username, password=hashed_password)
+        return redirect('/upload')
     return render_template('register.html')
 
 
@@ -147,14 +150,14 @@ def login():
         username = request.form['username']
         password = request.form['password']
         try:
-            user = plannificateur.User.get(plannificateur.User.username == username)
+            user = database.User.get(database.User.username == username)
             # check if the password is correct
             if bcrypt.check_password_hash(user.password, password):
                 login_user(user)
                 return redirect('/upload')
             else:
                 return 'Incorrect password'
-        except plannificateur.User.DoesNotExist:
+        except database.User.DoesNotExist:
                 return 'Incorrect username'
     return render_template('login.html')
 
