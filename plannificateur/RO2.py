@@ -36,7 +36,7 @@ def planning(firm, nb_packages, nb_articles_package):
             for k in range(0,2):
                 team = data.team[k]
                 planning["{}".format(day)]["{}".format(team)]["{}".format(post)] = nb_operators_needed//12
-        for j in range(nb_operators_needed%12):
+        for j in range(nb_operators_needed % 12):
             day = data.week[j]
             for k in range(0, 2):
                 team = data.team[k]

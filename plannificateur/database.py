@@ -41,14 +41,35 @@ class Activity(Model):
     name = CharField()
     nb_article_packages = FloatField()
 
-
-
     class Meta:
         database = db
 
 
+class User(Model):
+    username = CharField(unique=True)
+    password = CharField()
 
-db.create_tables([Person, Post, Skill, Activity])
+    class Meta:
+        database = db
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return self.is_active
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+
+
+db.create_tables([Person, Post, Skill, Activity,User])
 
 
 def create_table_post(path, firm_name):
@@ -89,6 +110,7 @@ def create_table_skill(path, firm_name):
 #persons_available_post = persons_available.select().where(Skill.operator == persons_available.name).where(Skill.post == Post.name).where(database.Skill.firm_name == firm)
 
 
+
 def create_table1():
     picking = Post.create(name='picking', time=2, index=1)
     packaging = Post.create(name='packaging', time=1, index=2)
@@ -112,9 +134,6 @@ def create_table1():
 
     Activity.create(name='br', nb_packages=1, nb_article_packages=2.3,  day=date(2023,  7, 1))
     Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
-
-
-
 
 
 #create_table_post("post.csv", "a")

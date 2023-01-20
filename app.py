@@ -48,7 +48,7 @@ def allowed_file(filename):
 @app.route('/create-firm-name')
 def create_firm_name():
     if current_user.is_authenticated:
-        user = .get(username=current_user.username)
+        user = plannificateur.User.get(username=current_user.username)
         user.firm_name = "My Firm"
         user.save()
         return "Firm name created"
@@ -77,7 +77,7 @@ def upload_file():
     # création des bases de données
     file_name1 = "person.csv"
     file_path1 = os.path.join(app.config['UPLOAD_FOLDER'], file_name1)
-    plannificateur.database.create_table_person(file_path1, firm_name)
+    plannificateur.create_table_person(file_path1, current_user.username)
 
     file_name2 = "post.csv"
     file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
@@ -104,58 +104,27 @@ def index():
 
 
 # base de données pour les utilisateurs
-DATABASE = 'database2.db'
-database = SqliteDatabase(DATABASE)
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)  # TODO: charger une instance de User à partir d'une ID user
+    return plannificateur.User.get(user_id)  # TODO: charger une instance de User à partir d'une ID user
 
 
 @app.before_request
 def before_request():
-    database.connect()
+    plannificateur.db.connect()
 
 
 @app.after_request
 def after_request(response):
-    database.close()
+    plannificateur.db.close()
     return response
 
 
-class BaseModel(Model):
-    class Meta:
-        database = database
 
 
 # the user model specifies its fields (or columns) declaratively
-class User(BaseModel):
-    username = CharField(unique=True)
-    password = CharField()
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_authenticated(self):
-        return self.is_active
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
-
-
-def create_tables():
-    with database:
-        database.create_tables([User])
-
-
-create_tables()
 
 
 
@@ -167,7 +136,7 @@ def register():
         # hash the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         # store the user in the database
-        User.create(username=username, password=hashed_password)
+        plannificateur.User.create(username=username, password=hashed_password)
         return redirect('/index')
     return render_template('register.html')
 
@@ -178,14 +147,14 @@ def login():
         username = request.form['username']
         password = request.form['password']
         try:
-            user = User.get(User.username == username)
+            user = plannificateur.User.get(plannificateur.User.username == username)
             # check if the password is correct
             if bcrypt.check_password_hash(user.password, password):
                 login_user(user)
                 return redirect('/upload')
             else:
                 return 'Incorrect password'
-        except User.DoesNotExist:
+        except plannificateur.User.DoesNotExist:
                 return 'Incorrect username'
     return render_template('login.html')
 
