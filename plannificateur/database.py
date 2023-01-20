@@ -74,6 +74,8 @@ class User(Model):
 
 
 
+
+
 db.create_tables([Person, Post, Skill, Activity,User])
 
 
