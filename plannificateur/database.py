@@ -2,8 +2,6 @@ from peewee import*
 from datetime import date
 import csv
 
-
-
 db = SqliteDatabase('firm.db')
 
 
@@ -13,6 +11,7 @@ class Person(Model):
     availability = BooleanField()
     nb_hour_week = IntegerField()   #nombre d'heures déja travaillées dans la semaine
     nb_hour_day = IntegerField()    #nombre d'heures déja travaillées dans le jour
+    firm_name = CharField()
 
     class Meta:
         database = db
@@ -22,6 +21,8 @@ class Post(Model):
     name = CharField(unique=True)
     time = FloatField()
     index = IntegerField()
+    action_on_article = IntegerField()
+    firm_name = CharField()
 
     class Meta:
         database = db
@@ -30,6 +31,7 @@ class Post(Model):
 class Skill(Model):
     operator = ForeignKeyField(Person, backref='persons')
     post = ForeignKeyField(Post, backref='posts')
+    firm_name = CharField()
 
     class Meta:
         database = db
@@ -38,8 +40,8 @@ class Skill(Model):
 class Activity(Model):
     name = CharField()
     nb_article_packages = FloatField()
-    nb_packages = IntegerField()
-    week_number = IntegerField()
+
+
 
     class Meta:
         database = db
@@ -49,41 +51,35 @@ db.connect()
 db.create_tables([Person, Post, Skill, Activity])
 
 
-def create_table_post(path):
+def create_table_post(path, firm_name):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            Post.create(name=row['name'], time=row['time'], index=row['index'])
+            Post.create(name=row['name'], time=row['time'], action_on_article=row['action_on_article'], index=row['index'], firm_name=firm_name)
     return()
 
-
-def create_table_person(path):
+create_table_post('post.csv', 'a')
+def create_table_person(path, firm_name):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            Person.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0)
+            Person.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0, firm_name=firm_name)
     return()
 
 
-def create_table_activity(path):
+def create_table_activity(firm_name, article_package):
+    Activity.create(name=firm_name,nb_article_packages=article_package)
+    return()
+
+
+def create_table_skill(path, firm_name):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            Activity.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0)
+            posts = row["post"].split(" ")
+            for post in posts:
+                Skill.create(operator=row['operator'], post=post, firm_name=firm_name)
     return()
-
-
-def create_table_skill(path):
-    with open(path, 'r') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            Skill.create(operator=row['operator'], post=row['post'])
-    return()
-
-
-create_table_person('plannificateur/person.csv')
-create_table_post('plannificateur/post.csv')
-create_table_skill('plannificateur/skill.csv')
 
 
 def create_table1():
@@ -110,5 +106,10 @@ def create_table1():
     Activity.create(name='br', nb_packages=1, nb_article_packages=2.3,  day=date(2023,  7, 1))
     Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
 
+
 db.close()
 
+#create_table_post("post.csv", "a")
+#create_table_person("person.csv","a")
+#create_table_activity("a", 12)
+#create_table_skill("skill.csv", "a")
