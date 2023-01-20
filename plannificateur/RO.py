@@ -44,7 +44,8 @@ def planning(firm, nb_packages, nb_articles_package):
                         planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += nb_interim
                         time_needed -= nb_interim*7
                         tot_interim += nb_interim
-    nb_person = tools.total_operators(firm, planning)
+    tot_interim = tot_interim//5 + 1
+    nb_person = tools.total_operators(firm, planning)//5 + 1
     return (planning, tot_interim, nb_person)
 
 print(planning("a",500,1.8))
