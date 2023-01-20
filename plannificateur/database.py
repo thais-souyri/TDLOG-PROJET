@@ -1,6 +1,7 @@
 from peewee import*
 from datetime import date
 import csv
+import app
 
 db = SqliteDatabase('firm.db')
 
@@ -66,6 +67,8 @@ class User(Model):
 
     def get_id(self):
         return self.id
+
+
 
 
 
