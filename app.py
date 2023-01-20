@@ -1,13 +1,15 @@
 import os
 
 import pdfkit as pdfkit
-from flask import Flask, render_template, request, redirect, url_for, flash, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response, send_from_directory
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, login_required, current_user, logout_user, UserMixin
 from peewee import *
 # import pdfkit
 from werkzeug.utils import secure_filename
 
+
+import plannificateur.database
 
 from plannificateur.constants import *
 #from plannificateur.database import *
@@ -19,6 +21,7 @@ from plannificateur.constants import *
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+
 login_manager = LoginManager()
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
@@ -33,12 +36,54 @@ if not os.path.isdir(UPLOAD_FOLDER):
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-ALLOWED_EXTENSIONS = set(['txt', 'csv'])
+ALLOWED_EXTENSIONS = {'csv'}
 
 #pour uploader les fichiers
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('download_file', name=filename))
+    return render_template('upload.html')
+
+
+#création des bases de données
+
+
+file_name1 = "person.csv"
+file_path1 = os.path.abspath(file_name1)
+plannificateur.database.create_table_person(file_path1)
+
+file_name2 = "post.csv"
+file_path2 = os.path.abspath(file_name2)
+plannificateur.database.create_table_post(file_path2)
+
+
+file_name3 = "skill.csv"
+file_path3 = os.path.abspath(file_name3)
+plannificateur.database.create_table_skill(file_path3)
+
+
+@app.route('/uploads/<name>')
+def download_file(name):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
 
 @app.route('/index', methods=['POST','GET'])
@@ -46,30 +91,6 @@ def index():
     return render_template('index.html')
 
 
-paths=[]
-@app.route('/', methods=['POST'])
-def upload_file():
-    if request.method == 'POST':
-
-        if 'files[]' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-
-        files = request.files.getlist('files[]')
-        for file in files:
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                path=os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(path)
-                paths.append(path)
-        flash('File(s) successfully uploaded')
-
-        #création des bases de données
-        database.create_table_person(paths[0])
-        database.create_table_post(paths[1])
-        database.create_table_skill(paths[2])
-
-        return redirect('/index')
 
 
 # base de données pour les utilisateurs
@@ -151,7 +172,7 @@ def login():
             # check if the password is correct
             if bcrypt.check_password_hash(user.password, password):
                 login_user(user)
-                return redirect('/index')
+                return redirect('/upload')
             else:
                 return 'Incorrect password'
         except User.DoesNotExist:
@@ -171,7 +192,7 @@ def unauthorized():
     return "You must be logged in to access this page."
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/uploadusername', methods=['GET', 'POST'])
 @login_required
 def upload_page():
     return f"L'utilisateur actuel est {current_user.username}"
