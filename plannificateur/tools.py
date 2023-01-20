@@ -35,15 +35,21 @@ def persons_available(firm):
 
 def persons_available_post(firm, post):
     p_a = persons_available(firm)
-    persons = p_a.select().where(database.Skill.operator == persons_available).where(database.Skill.post == post).where(database.Skill.firm_name == firm)
+    persons = p_a.select().join(database.Skill).where(database.Skill.operator == persons_available).where(database.Skill.post == post).where(database.Skill.firm_name == firm)
     return persons
 
-def need_interim(firm):
-    persons = persons_available(firm)
+def need_interim(firm,post):
+    persons_available = database.Person.select().where(database.Person.nb_hour_day < 7).where(database.Person.nb_hour_week < 35).where(database.Person.firm_name == firm)
+    persons_available_post = persons_available.select().join(database.Skill).where(database.Skill.operator == persons_available).where(database.Skill.post == post).where(database.Skill.firm_name == firm)
+    sum = 0
     need = False
-    if len(persons) == 0 :
+    for p in persons_available_post:
+        sum +=1
+    if sum != 0 :
         need = True
     return need
+
+
 
 def nb_person(firm):
     nb_person = 0
@@ -64,7 +70,7 @@ def total_operators(firm, planning):
         for t in range (0,3):
             team = data.team[t]
             for post in database.Post.select().where(database.Post.firm_name == firm) :
-                sum+= planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)]
+                sum += planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)]
     return sum
 
 

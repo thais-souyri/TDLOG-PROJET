@@ -6,4 +6,4 @@ nb_max_team = 50
 
 max_height_database = 0
 
-nb_run_RO = 20
+nb_run_RO = 50
