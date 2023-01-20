@@ -1,9 +1,8 @@
 import os
-
 import pdfkit as pdfkit
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response, send_from_directory
-from flask_bcrypt import Bcrypt
-from flask_login import login_user, LoginManager, login_required, current_user, logout_user, UserMixin
+from flask_bcrypt import *
+from flask_login import *
 from peewee import *
 # import pdfkit
 from werkzeug.utils import secure_filename
@@ -76,25 +75,11 @@ def upload_file():
 
 
     return render_template('upload.html')
-    return redirect('/create')
 
 
 
-@app.route('/create', methods=['GET', 'POST'])
-@login_required
-def create_tables_from_files():
-    # création des bases de données
-    file_name1 = "person.csv"
-    file_path1 = os.path.join(app.config['UPLOAD_FOLDER'], file_name1)
-    database.create_table_person(file_path1, current_user.username)
 
-    file_name2 = "post.csv"
-    file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
-    database.create_table_post(file_path2, 'b')
-    file_name3 = "skill.csv"
-    file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], file_name3)
-    database.create_table_skill(file_path3, current_user.username)
-    return render_template('upload.html')
+
 
 
 
@@ -197,6 +182,17 @@ def launching():
 
 @app.route("/result", methods=["POST"])
 def result():
+    # création des bases de données
+    file_name1 = "person.csv"
+    file_path1 = os.path.join(app.config['UPLOAD_FOLDER'], file_name1)
+    database.create_table_person(file_path1, current_user.username)
+
+    file_name2 = "post.csv"
+    file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
+    database.create_table_post(file_path2, 'b')
+    file_name3 = "skill.csv"
+    file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], file_name3)
+    database.create_table_skill(file_path3, current_user.username)
     colis=request.form['nb_colis']
     pieces=request.form['nb_pieces']
     #retour=RO3.main(current_user.username,colis, pieces)
