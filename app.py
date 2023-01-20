@@ -189,7 +189,7 @@ def result():
 
     file_name2 = "post.csv"
     file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
-    database.create_table_post(file_path2, 'b')
+    database.create_table_post(file_path2, current_user.username)
     file_name3 = "skill.csv"
     file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], file_name3)
     database.create_table_skill(file_path3, current_user.username)
