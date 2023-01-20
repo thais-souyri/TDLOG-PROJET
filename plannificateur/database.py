@@ -18,7 +18,7 @@ class Person(Model):
 
 
 class Post(Model):
-    name = CharField(unique=True)
+    name = CharField(unique=True, primary_key=True)
     time = FloatField()
     index = IntegerField()
     action_on_article = IntegerField()
@@ -58,7 +58,7 @@ def create_table_post(path, firm_name):
             Post.create(name=row['name'], time=row['time'], action_on_article=row['action_on_article'], index=row['index'], firm_name=firm_name)
     return()
 
-create_table_post('post.csv', 'a')
+
 def create_table_person(path, firm_name):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -80,6 +80,13 @@ def create_table_skill(path, firm_name):
             for post in posts:
                 Skill.create(operator=row['operator'], post=post, firm_name=firm_name)
     return()
+
+#create_table_post('post.csv', 'a')
+#create_table_person('person.csv', 'a')
+#create_table_skill('skill.csv', 'a')
+
+#persons_available = Person.select().where(Person.nb_hour_day < 7).where(Person.nb_hour_week < 35).where(Person.firm_name == 'a')
+#persons_available_post = persons_available.select().where(Skill.operator == persons_available.name).where(Skill.post == Post.name).where(database.Skill.firm_name == firm)
 
 
 def create_table1():
@@ -108,6 +115,7 @@ def create_table1():
 
 
 db.close()
+
 
 #create_table_post("post.csv", "a")
 #create_table_person("person.csv","a")
