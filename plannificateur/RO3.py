@@ -86,8 +86,6 @@ def planning (firm, nb_packages, nb_articles_package):
                         nb_interim_tot += nb_interim
 
 
-
-
     for person in database.Person.select().where(database.Person.firm_name == firm):
         if nb_hours_week[person.ident - 1] > 0 and (person.ident not in persons_working):
             nb_person_working += 1
