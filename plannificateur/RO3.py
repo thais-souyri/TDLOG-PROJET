@@ -3,7 +3,30 @@ import database
 import tools
 from peewee import *
 
+def nb_hours(firm):
+    nb_hours_day = []
+    nb_hours_week = []
+    for person in database.Person.select().where(database.Person.firm_name == firm) :
+        nb_hours_day.append(person.nb_hour_day)
+        nb_hours_week.append(person.nb_hour_week)
+    return (nb_hours_day, nb_hours_week)
 
+def persons_available(firm):
+    persons = []
+    (nb_hours_day, nb_hours_week) = nb_hours(firm)
+    for person in database.Person.select().where(database.Person.firm_name == firm):
+        if nb_hours_day[person.ident - 1] < 7 or nb_hours_week[person.ident - 1] < 35 :
+            persons.append(person.ident)
+    return persons
+
+def persons_available_post(firm,post):
+    persons = persons_available(firm)
+    p_a_p = []
+    for person in database.Person.select().join(database.Skill).where(database.Skill.operator == database.Person.ident).where(database.Skill.post == post).where(database.Skill.firm_name == firm).select().order_by(fn.Random()):
+        for i in persons :
+            if person.ident == i:
+                p_a_p.append(i)
+    return p_a_p
 
 def planning (firm, nb_packages, nb_articles_package):
     planning = tools.dict_creation(firm)
@@ -12,74 +35,67 @@ def planning (firm, nb_packages, nb_articles_package):
     nb_day_more_team = 0
     persons_working = []
     nb_interim_tot = 0
-    for post in database.Post.select().where(database.Post.firm_name == firm).order_by(fn.Random()):
+    (nb_hours_day, nb_hours_week) = nb_hours(firm)
+
+    Post_rd = database.Post.select().where(database.Post.firm_name == firm).order_by(fn.Random())
+    for post in Post_rd:
         time_needed = tools.time_needed_post(firm, nb_packages, nb_articles_package, post.name)
         time_needed_day_team = [[0,0,0] for i in range (0,6)]
-        if time_needed//12 > 7 * data.nb_max_team:
-            nb_day_more_team = (time_needed% (7 * data.nb_max_team))//6 + 1
+        if time_needed//12 > 7 * 60 * data.nb_max_team:
+            nb_day_more_team = (time_needed % (7 * 60 * data.nb_max_team))//6 + 1
             for i in range(0,nb_day_more_team):
                 nb_team[i] = 3
         for i in range(0, 6):
             for j in range(0, nb_team[i]):
-                time_needed_day_team[i][j] = time_needed // 6 * 2 + nb_day_more_team
-        if nb_day_more_team != 0 :
-            time_needed_day_team[nb_day_more_team - 1][2] = time_needed % 6 * 2 + nb_day_more_team
+                time_needed_day_team[i][j] = time_needed / (6 * 2 + nb_day_more_team)
 
         for i in range(0,6):
             for t in range (0,nb_team[i]):
                 while time_needed_day_team[i][t] > 0 :
-                    persons_available = database.Person.select().where(database.Person.nb_hour_day < 7).where(database.Person.nb_hour_week < 35).where(database.Person.firm_name == firm)
-                    persons = persons_available.join(database.Skill).where(database.Skill.operator == persons_available).where(database.Skill.post == post).where(database.Skill.firm_name == firm).select().order_by(fn.Random())
-                    nb_persons = 0
-                    for person in persons :
-                        nb_persons += 1
-                        if person.nb_hour_day < time_needed_day_team[i][t] :
-                            value_day = person.nb_hour_day + 7
-                            value_week = person.nb_hour_week + person.nb_hour_day
-                            time_needed_day_team[i][t] -= person.nb_hour_day
-                            print(time_needed_day_team[i][t])
-                            query = database.Person.update(nb_hour_day=value_day).where(
-                                database.Person.ident == person.ident)
-                            query.execute()
-                            query = database.Person.update(nb_hour_day=value_week).where(
-                                database.Person.ident == person.ident)
-                            query.execute()
+                    persons = persons_available_post(firm,post)
+
+
+                    for index in persons:
+                        if (7 - nb_hours_day[index-1]) * 60 <= time_needed_day_team[i][t] :
+                            time_needed_day_team[i][t] -= (7 - nb_hours_day[index - 1]) * 60
+                            nb_hours_week[index - 1] += 7 - nb_hours_day[index - 1]
+                            nb_hours_day[index-1] = 7
                             day = data.week[i]
                             team = data.team[t]
                             planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += 1
 
-                        else :
-                            value_day = person.nb_hour_day + time_needed_day_team[i][t]
-                            value_week = person.nb_hour_week + time_needed_day_team[i][t]
-                            query = database.Person.update(nb_hour_day = value_day).where(database.Person.ident == person.ident)
-                            query.execute()
-                            query = database.Person.update(nb_hour_day = value_week).where(database.Person.ident == person.ident)
-                            query.execute()
+
+                        else:
+                            nb_hours_day[index-1] += time_needed_day_team[i][t]/60
+                            nb_hours_week[index-1] += time_needed_day_team[i][t]/60
                             time_needed_day_team[i][t] = 0
                             day = data.week[i]
                             team = data.team[t]
                             planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += 1
 
-                    if time_needed_day_team[i][t] > nb_persons * 7:
-                        nb_interim = ((time_needed_day_team[i][t] - nb_persons * 7)//7) +1
-                        time_needed_day_team[i][t] -= 7 * nb_interim
+                    sum_time_left = 0
+                    for index in persons:
+                        sum_time_left += nb_hours_day[index - 1]
+
+                    if time_needed_day_team[i][t] > sum_time_left:
+                        nb_interim = ((time_needed_day_team[i][t] - sum_time_left) // (7 * 60)) + 1
+                        time_needed_day_team[i][t] -= 7 * 60 * nb_interim
                         day = data.week[i]
                         team = data.team[t]
                         planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += nb_interim
                         nb_interim_tot += nb_interim
 
-        for person in database.Person.select().where(database.Person.firm_name == firm):
-            print(person.nb_hour_day)
-            if (person.nb_hour_week > 0) and (person.name not in persons_working):
-                nb_person_working += 1
-                persons_working.append(person.name)
 
 
-        #nb_person_working += nb_interim_tot
-    query = database.Person.update(nb_hour_day=0)
-    query.execute()
-    query = database.Person.update(nb_hour_day=0)
-    query.execute()
-    return (planning, nb_interim_tot, nb_person_working)
 
-print(planning('a',500,1.8))
+    for person in database.Person.select().where(database.Person.firm_name == firm):
+        if nb_hours_week[person.ident - 1] > 0 and (person.ident not in persons_working):
+            nb_person_working += 1
+            persons_working.append(person.ident)
+
+    nb_interims = nb_interim//5 + 1
+    nb_person_working += nb_interims
+
+    return (planning, nb_interims, nb_person_working)
+
+print(planning('a',2000,1.8))

@@ -16,11 +16,12 @@ def dict_creation(firm) :
 
 
 def time_needed_post(firm, nb_packages, nb_articles_package,post):
-    time = 0
     for post in database.Post.select().where(database.Post.name == post).where(database.Post.firm_name == firm):
         t = nb_packages * post.time
         if post.action_on_article :
             time = t * nb_articles_package
+        else :
+            time = t
     return time
 
 def time_needed(firm, nb_packages, nb_articles_package):
