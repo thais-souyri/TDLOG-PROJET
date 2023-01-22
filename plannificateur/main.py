@@ -8,7 +8,7 @@ import tools
 
 
 def main(firm, nb_packages, nb_articles_package):
-    if tools.time_needed(firm, nb_packages, nb_articles_package) > 6 * 7 * data.nb_max_team :
+    if tools.time_needed(firm, nb_packages, nb_articles_package) > 6 * 7 * 60 * data.nb_max_team :
         return "La livraison ne peut être effectuée, il y a trop d'articles"
 
 
