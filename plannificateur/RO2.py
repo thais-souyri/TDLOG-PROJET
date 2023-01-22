@@ -70,5 +70,3 @@ def planning(firm, nb_packages, nb_articles_package):
     nb_operators = tools.total_operators(firm, planning)//5 + 1
     return (planning, sum_interim, nb_operators)
 
-
-print(planning('a',2000,1.8))

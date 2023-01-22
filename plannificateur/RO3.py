@@ -91,9 +91,8 @@ def planning (firm, nb_packages, nb_articles_package):
             nb_person_working += 1
             persons_working.append(person.ident)
 
-    nb_interims = nb_interim//5 + 1
+    nb_interims = nb_interim_tot//5 + 1
     nb_person_working += nb_interims
 
     return (planning, nb_interims, nb_person_working)
 
-print(planning('a',2000,1.8))

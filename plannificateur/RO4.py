@@ -8,3 +8,5 @@ def planning(firm, nb_packages, nb_articles_package):
         if o < nb_operator :
             (planning, nb_interim, nb_operator) = (p,i,o)
     return (planning, nb_interim, nb_operator)
+
+print(planning('a', 5000, 1))
