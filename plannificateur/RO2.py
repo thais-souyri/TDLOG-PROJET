@@ -1,12 +1,12 @@
-import data
-import database
-import tools
+import plannificateur.data
+import plannificateur.database
+import plannificateur.tools
 
 def planning(firm, nb_packages, nb_articles_package):
     planning = plannificateur.tools.dict_creation(firm)
     nb_interim = []
 
-    for post in database.Post.select().where(database.Post.firm_name == firm):
+    for post in plannificateur.database.Post.select().where(plannificateur.database.Post.firm_name == firm):
         time_needed = plannificateur.tools.time_needed_post(firm, nb_packages, nb_articles_package, post)
         nb_interim_post = 0
         nb_operators_night = 0

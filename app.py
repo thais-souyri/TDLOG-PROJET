@@ -1,20 +1,25 @@
 import os
+
 import pdfkit as pdfkit
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response, send_from_directory
-from flask_bcrypt import *
-from flask_login import *
+from flask_bcrypt import Bcrypt
+from flask_login import login_user, LoginManager, login_required, current_user, logout_user, UserMixin
 from peewee import *
 # import pdfkit
 from werkzeug.utils import secure_filename
 
 
 from plannificateur import database
+from plannificateur.RO3 import planning
+#from plannificateur.RO2 import planning
+
+
 
 from plannificateur.constants import *
 #from plannificateur.database import *
 #from plannificateur.RO3 import *
 import plannificateur.database
-
+from plannificateur.main import *
 
 
 
@@ -125,7 +130,7 @@ def register():
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         # store the user in the database
         database.User.create(username=username, password=hashed_password)
-        return redirect('/upload')
+        return redirect('/login')
     return render_template('register.html')
 
 
@@ -186,19 +191,21 @@ def result():
     file_name1 = "person.csv"
     file_path1 = os.path.join(app.config['UPLOAD_FOLDER'], file_name1)
     database.create_table_person(file_path1, current_user.username)
-
     file_name2 = "post.csv"
     file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
     database.create_table_post(file_path2, current_user.username)
     file_name3 = "skill.csv"
     file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], file_name3)
     database.create_table_skill(file_path3, current_user.username)
-    colis=request.form['nb_colis']
-    pieces=request.form['nb_pieces']
-    #retour=RO3.main(current_user.username,colis, pieces)
-    return render_template("result.html", days=DAYS, posts=POSTS,
-                           planning=RETURN_EXAMPLE[0],nb_person=RETURN_EXAMPLE[1], nb_interim=RETURN_EXAMPLE[2])
+    colis=int(request.form['nb_colis'])
+    pieces=int(request.form['nb_pieces'])
+    #utilisation de la fonction RO de création de planning
+    resultat=plannificateur.RO3.planning(current_user.username, colis, pieces)
+    return render_template("result.html", days=DAYS, posts=POSTS2,
+    planning=resultat[0],nb_person=resultat[2], nb_interim=resultat[1])
 
+    #return render_template("result.html", days=DAYS, posts=POSTS2, planning=RETURN_EXAMPLE[0],
+                           #nb_person=RETURN_EXAMPLE[2], nb_interim=RETURN_EXAMPLE[1])
 
 # A voir l'utilité de cette fonction: on peut imprimer directement à l'aide du navigateur
 @app.route("/pdf")

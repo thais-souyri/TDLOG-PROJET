@@ -1,5 +1,5 @@
-import data
-import database
+import plannificateur.data
+import plannificateur.database
 
 def dict_creation(firm) :
     planning = {}
@@ -16,7 +16,7 @@ def dict_creation(firm) :
 
 
 def time_needed_post(firm, nb_packages, nb_articles_package,post):
-    for post in plannificateur.database.Post.select().where(database.Post.name == post).where(plannificateur.database.Post.firm_name == firm):
+    for post in plannificateur.database.Post.select().where(plannificateur.database.Post.name == post).where(plannificateur.database.Post.firm_name == firm):
         t = nb_packages * post.time
         if post.action_on_article :
             time = t * nb_articles_package
@@ -40,7 +40,7 @@ def persons_available_post(firm, post):
     return persons
 
 def need_interim(firm,post):
-    persons_available = plannificateur.database.Person.select().where(dplannificateur.atabase.Person.nb_hour_day < 7).where(plannificateur.database.Person.nb_hour_week < 35).where(plannificateur.database.Person.firm_name == firm)
+    persons_available = plannificateur.database.Person.select().where(plannificateur.database.Person.nb_hour_day < 7).where(plannificateur.database.Person.nb_hour_week < 35).where(plannificateur.database.Person.firm_name == firm)
     persons_available_post = persons_available.select().join(plannificateur.database.Skill).where(plannificateur.database.Skill.operator == persons_available).where(plannificateur.database.Skill.post == post).where(plannificateur.database.Skill.firm_name == firm)
     sum = 0
     need = False
@@ -69,7 +69,7 @@ def total_operators(firm, planning):
     for i in range(0,6):
         day = plannificateur.data.week[i]
         for t in range (0,3):
-            team = data.team[t]
+            team = plannificateur.data.team[t]
             for post in plannificateur.database.Post.select().where(plannificateur.database.Post.firm_name == firm) :
                 sum += planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)]
     return sum

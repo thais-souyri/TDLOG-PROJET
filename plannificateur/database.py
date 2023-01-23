@@ -109,12 +109,7 @@ def create_table_skill(path, firm_name):
                 Skill.create(operator=row['operator'], post=post, firm_name=firm_name)
     return()
 
-#create_table_post('post.csv', 'a')
-#create_table_person('person.csv', 'a')
-#create_table_skill('skill.csv', 'a')
 
-#persons_available = Person.select().where(Person.nb_hour_day < 7).where(Person.nb_hour_week < 35).where(Person.firm_name == 'a')
-#persons_available_post = persons_available.select().where(Skill.operator == persons_available.name).where(Skill.post == Post.name).where(database.Skill.firm_name == firm)
 
 
 
@@ -143,7 +138,4 @@ def create_table1():
     Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
 
 
-#create_table_post("post.csv", "a")
-#create_table_person("person.csv","a")
-#create_table_activity("a", 12)
-#create_table_skill("skill.csv", "a")
+

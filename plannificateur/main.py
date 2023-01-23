@@ -1,14 +1,14 @@
-import RO
-import RO2
-import RO4
-#import solver
-import data
-import database
-import tools
+import plannificateur.RO
+import plannificateur.RO2
+import plannificateur.RO4
+#import plannificateur.solver
+import plannificateur.data
+import plannificateur.database
+import plannificateur.tools
 
 
 def main(firm, nb_packages, nb_articles_package):
-    if tools.time_needed(firm, nb_packages, nb_articles_package) > 6 * 7 * 60 * plannificateur.data.nb_max_team :
+    if plannificateur.tools.time_needed(firm, nb_packages, nb_articles_package) > 6 * 7 * 60 * plannificateur.data.nb_max_team :
         return "La livraison ne peut être effectuée, il y a trop d'articles"
 
 
