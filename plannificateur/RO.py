@@ -1,6 +1,6 @@
-import data
-import tools
-import database
+import plannificateur.data
+import plannificateur.tools
+import plannificateur.database
 import random as rd
 
 def nb_operators(firm, post):
@@ -12,14 +12,14 @@ def nb_operators(firm, post):
 
 def nb_teams_needed(firm, nb_packages, nb_articles_package):
     nb_team = [2 for i in range(0, 6)]
-    time_available = sum(nb_team) * 7 * 60 * data.nb_max_team
-    if plannificateur.tools.time_needed(firm, nb_packages, nb_articles_package) > 18 * 7 * 60 * data.nb_max_team :
+    time_available = sum(nb_team) * 7 * 60 * plannificateur.data.nb_max_team
+    if plannificateur.tools.time_needed(firm, nb_packages, nb_articles_package) > 18 * 7 * 60 * plannificateur.data.nb_max_team :
         return "pas de solution"
     else :
         while plannificateur.tools.time_needed(firm, nb_packages, nb_articles_package) > time_available :
             for i in range(0,6):
                 nb_team[i] = rd.randint(2,3)
-                time_available = sum(nb_team) * 7 * 60 * data.nb_max_team
+                time_available = sum(nb_team) * 7 * 60 * plannificateur.data.nb_max_team
     return nb_team
 
 def planning(firm, nb_packages, nb_articles_package):
@@ -28,12 +28,12 @@ def planning(firm, nb_packages, nb_articles_package):
     tot_interim = 0
     if nb_teams == "pas de solution":
         return nb_teams
-    for post in plannificateur.database.Post.select().where(database.Post.firm_name == firm):
+    for post in plannificateur.database.Post.select().where(plannificateur.database.Post.firm_name == firm):
         time_needed = plannificateur.tools.time_needed_post(firm, nb_packages, nb_articles_package, post.name)
         while time_needed > 0 :
             for j in range(0, 6):
-                day = data.week[j]
-                team = data.team[rd.randint(0,nb_teams[j]-1)]
+                day = plannificateur.data.week[j]
+                team = plannificateur.data.team[rd.randint(0,nb_teams[j]-1)]
                 nb = nb_operators(firm, post)
                 time_needed -= nb * 7 * 60
                 planning["{}".format(day)]["{}".format(team)]["{}".format(post.name)] += nb_operators(firm, post)

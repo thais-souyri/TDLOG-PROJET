@@ -1,6 +1,6 @@
-import data
-import database
-import tools
+import plannificateur.data
+import plannificateur.database
+import plannificateur.tools
 from peewee import *
 
 def nb_hours(firm):
@@ -22,7 +22,7 @@ def persons_available(firm):
 def persons_available_post(firm,post):
     persons = persons_available(firm)
     p_a_p = []
-    for person in plannificateur.database.Person.select().join(dplannificateur.atabase.Skill).where(plannificateur.database.Skill.operator == plannificateur.database.Person.ident).where(dplannificateur.atabase.Skill.post == post).where(plannificateur.database.Skill.firm_name == firm).select().order_by(fn.Random()):
+    for person in plannificateur.database.Person.select().join(plannificateur.database.Skill).where(plannificateur.database.Skill.operator == plannificateur.database.Person.ident).where(plannificateur.database.Skill.post == post).where(plannificateur.database.Skill.firm_name == firm).select().order_by(fn.Random()):
         for i in persons :
             if person.ident == i:
                 p_a_p.append(i)
@@ -37,7 +37,7 @@ def planning (firm, nb_packages, nb_articles_package):
     nb_interim_tot = 0
     (nb_hours_day, nb_hours_week) = nb_hours(firm)
 
-    Post_rd = database.Post.select().where(plannificateur.database.Post.firm_name == firm).order_by(fn.Random())
+    Post_rd = plannificateur.database.Post.select().where(plannificateur.database.Post.firm_name == firm).order_by(fn.Random())
     for post in Post_rd:
         time_needed = plannificateur.tools.time_needed_post(firm, nb_packages, nb_articles_package, post.name)
         time_needed_day_team = [[0,0,0] for i in range (0,6)]
@@ -86,7 +86,7 @@ def planning (firm, nb_packages, nb_articles_package):
                         nb_interim_tot += nb_interim
 
 
-    for person in database.Person.select().where(database.Person.firm_name == firm):
+    for person in plannificateur.database.Person.select().where(plannificateur.database.Person.firm_name == firm):
         if nb_hours_week[person.ident - 1] > 0 and (person.ident not in persons_working):
             nb_person_working += 1
             persons_working.append(person.ident)

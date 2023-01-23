@@ -51,11 +51,46 @@ PLANNING_EXAMPLE: Dict[Day, Dict[DayPeriod, Dict[PostType, int]]] = {'lundi': {
         'nuit': {'pickeur rack': 1, 'pickeur etagere': 5, 'operateur skypod': 7, 'agent logistique ventilation': 0,
                  'agent logistique conduceteur de ligne emballage': 1, 'agent logistique palettisation': 3}}}
 
-RETURN_EXAMPLE=(PLANNING_EXAMPLE,200,50)
-
+PLANNING_EXAMPLE2={'lundi': {
+    'matin': {'Picking': 6,'Packaging': 3, 'Palletization': 2},
+    'après-midi': {'Picking': 6,'Packaging': 5,
+                   'Palletization': 0}}, 'mardi': {
+    'matin': {'Picking': 0,
+              'Packaging': 0, 'Palletization': 6},
+    'après-midi': {'Picking': 5, 'Packaging': 2,
+                   'Palletization': 7}}, 'mercredi': {
+    'matin': {'Picking': 1,
+              'Packaging': 5, 'Palletization': 7},
+    'après-midi': {'Picking': 0, 'Packaging': 5,
+                   'Palletization': 0},
+    'nuit': {'Picking': 6,
+             'Packaging': 2, 'Palletization': 5}}, 'jeudi': {
+    'matin': {'Picking': 5,
+              'Packaging': 2, 'Palletization': 4},
+    'après-midi': {'Picking': 5, 'Packaging': 5,
+                   'Palletization': 5}}, 'vendredi': {
+    'matin': {'Picking': 5,
+              'Packaging': 2, 'Palletization': 5},
+    'après-midi': {'Picking': 7, 'Packaging': 6,
+                   'Palletization': 7}}, 'samedi': {
+    'matin': {'Picking': 5,
+              'Packaging': 2, 'Palletization': 3},
+    'après-midi': {'Picking': 3, 'Packaging': 4,
+                   'Palletization': 4},
+    'nuit': {'Picking': 4,
+             'Packaging': 6, 'Palletization': 7}},
+    'dimanche': {
+        'matin': {'Picking': 6,
+                  'Packaging': 4, 'Palletization': 0},
+        'après-midi': {'pickeur rack': 5,  'Packaging': 4,
+                       'Palletization': 5},
+        'nuit': {'Picking': 1,
+                 'Packaging': 1, 'Palletization': 3}}}
+RETURN_EXAMPLE=(PLANNING_EXAMPLE2,25,147)
 DAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
 POSTS = ["pickeur rack", "pickeur etagere", "operateur skypod", "agent logistique ventilation",
          "agent logistique conduceteur de ligne emballage", "agent logistique palettisation"]
 
+POSTS2=["Picking", "Packaging", "Palletization"]
 MONTHS = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre",
           "Novembre", "Décembre"]
