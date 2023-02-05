@@ -1,28 +1,16 @@
 import os
-
 import pdfkit as pdfkit
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response, send_from_directory
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, login_required, current_user, logout_user, UserMixin
 from peewee import *
-# import pdfkit
 from werkzeug.utils import secure_filename
-
 
 from plannificateur import database
 from plannificateur.RO3 import planning
-#from plannificateur.RO2 import planning
-
-
-
 from plannificateur.constants import *
-#from plannificateur.database import *
-#from plannificateur.RO3 import *
 import plannificateur.database
 from plannificateur.main import *
-
-
-
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -43,10 +31,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ALLOWED_EXTENSIONS = {'csv'}
 
-#pour uploader les fichiers
+
+# pour uploader les fichiers
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/create-firm-name')
@@ -78,14 +67,7 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('download_file', name=filename))
 
-
     return render_template('upload.html')
-
-
-
-
-
-
 
 
 @app.route('/uploads/<name>')
@@ -93,11 +75,9 @@ def download_file(name):
     return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
 
-@app.route('/index', methods=['POST','GET'])
+@app.route('/index', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
-
-
 
 
 # base de données pour les utilisateurs
@@ -106,6 +86,7 @@ def index():
 @login_manager.user_loader
 def load_user(user_id):
     return database.User.get(user_id)  # TODO: charger une instance de User à partir d'une ID user
+
 
 @app.before_request
 def before_request():
@@ -117,8 +98,8 @@ def after_request(response):
     database.db.close()
     return response
 
-# the user model specifies its fields (or columns) declaratively
 
+# the user model specifies its fields (or columns) declaratively
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -148,7 +129,7 @@ def login():
             else:
                 return 'Incorrect password'
         except database.User.DoesNotExist:
-                return 'Incorrect username'
+            return 'Incorrect username'
     return render_template('login.html')
 
 
@@ -171,8 +152,6 @@ def upload_page():
     pass  # TODO
 
 
-
-
 @app.route('/us')
 def us():
     return render_template('us.html')
@@ -182,10 +161,7 @@ def us():
 def launching():
     return render_template("launchingpage.html")
 
-
-
-
-@app.route("/result", methods=["POST"])
+@app.route("/result", methods=["POST", "GET"])
 def result():
     # création des bases de données
     file_name1 = "person.csv"
@@ -197,27 +173,14 @@ def result():
     file_name3 = "skill.csv"
     file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], file_name3)
     database.create_table_skill(file_path3, current_user.username)
-    colis=int(request.form['nb_colis'])
-    pieces=int(request.form['nb_pieces'])
-    #utilisation de la fonction RO de création de planning
-    resultat=plannificateur.RO3.planning(current_user.username, colis, pieces)
+    colis = int(request.form['nb_colis'])
+    pieces = int(request.form['nb_pieces'])
+    # utilisation de la fonction RO de création de planning
+    resultat = plannificateur.RO3.planning(current_user.username, colis, pieces)
+
+
     return render_template("result.html", days=DAYS, posts=POSTS2,
-    planning=resultat[0],nb_person=resultat[2], nb_interim=resultat[1])
-
-    #return render_template("result.html", days=DAYS, posts=POSTS2, planning=RETURN_EXAMPLE[0],
-                           #nb_person=RETURN_EXAMPLE[2], nb_interim=RETURN_EXAMPLE[1])
-
-# A voir l'utilité de cette fonction: on peut imprimer directement à l'aide du navigateur
-@app.route("/pdf")
-def convert_to_pdf():
-    name = "planning"
-    html = render_template(
-        "result.html",
-        name=name)
-    pdf = pdfkit.from_string(html, False)
-    response = make_response(pdf)
-    response.headers["Content-Type"] = "application/pdf"
-    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+                           planning=resultat[0], nb_person=resultat[2], nb_interim=resultat[1])
 
 
 if __name__ == "__main__":
