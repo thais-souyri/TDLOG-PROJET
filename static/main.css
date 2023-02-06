@@ -77,9 +77,6 @@ body {
 }
 
 
-
-
-
 #service {
     margin: 34px;
     display: flex;
@@ -132,4 +129,19 @@ body {
 }
 
 
+
+/*page de lancement */
+
+
+.entrepot {
+    position: absolute;
+    top: 400px;
+    right: 500px;
+}
+
+.logo {
+    position: absolute;
+    top: 105px;
+    right: 700px;
+}
 
