@@ -54,6 +54,26 @@ body {
     color: #000;
 }
 
+/*page de lancement */
+
+
+.entrepot {
+    position: absolute;
+    top: 130px;
+    right: 130px; ;
+
+}
+
+.logo {
+    position: absolute;
+    top: -175px;
+    right: 300px;
+}
+
+
+
+
+
 
 .container {
     left: 50%;
@@ -130,18 +150,4 @@ body {
 
 
 
-/*page de lancement */
-
-
-.entrepot {
-    position: absolute;
-    top: 400px;
-    right: 500px;
-}
-
-.logo {
-    position: absolute;
-    top: 105px;
-    right: 700px;
-}
 
