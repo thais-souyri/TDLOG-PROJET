@@ -2,9 +2,9 @@
 {% block body %}
 
 <div class="description">
-    <h1>Bienvenue sur l'outil de planification CLR!</h1>
-    <a href="{{url_for('login')}}"> Connexion </a><br>
-    <a href="{{url_for('register')}}"> Inscription </a><br>
+    <h1 id="welcome">Bienvenue sur l'outil de planification CLR!</h1>
+    <a href="{{url_for('login')}}" id="connexion"> Connexion </a><br>
+    <a href="{{url_for('register')}}" id="inscription"> Inscription </a><br>
 
     <img src="static/entrepots.jpg" id="entrepot" width="500" height="250" class="img-rounded">
     <img src="static/logo_CLR.png" id="logo" width="150" height="150" class="img-rounded">
@@ -13,16 +13,35 @@
 
 
 <style>
-#entrepot {
+
+    #welcome{
         position: absolute;
-        top:140px;
-        right:130px;
+        top:50px;
+
+    }
+
+    #inscription{
+        position:absolute;
+        top:170px;
+        left: 280px;
+    }
+#connexion{
+        position:absolute;
+        top:200px;
+    left: 280px;
+    }
+
+
+#entrepot {
+        position: relative;
+        top:210px;
+        right:-70px;
     }
 
     #logo {
-    position:absolute;
-    top: -160px;
-    right: 305px;}
+    position:relative ;
+    top: -180px;
+    right: 250px;}
 </style>
 
 {% endblock %}
