@@ -6,38 +6,13 @@
     <a href="{{url_for('login')}}" id="connexion"> Connexion </a><br>
     <a href="{{url_for('register')}}" id="inscription"> Inscription </a><br>
 
-    <img src="static/entrepots.jpg" id="entrepot" width="500" height="250" class="img-rounded">
-    <img src="static/logo_CLR.png" id="logo" width="150" height="150" class="img-rounded">
-
 </div>
 
+<img class="entrepot" src="static/entrepots.jpg" id="entrepot" width="500" height="250" class="img-rounded">
+<img class="logo" src="static/logo_CLR.png" id="logo" width="150" height="150" class="img-rounded">
 
 <style>
 
-
-
-    #inscription{
-        position:absolute;
-        top:70px;
-        left: 340px;
-    }
-#connexion{
-        position:absolute;
-        top:100px;
-    left: 340px;
-    }
-
-
-#entrepot {
-        position: absolute;
-        top:150px;
-        right:130px;
-    }
-
-    #logo {
-    position:absolute ;
-    top: -170px;
-    right: 300px;}
 </style>
 
 {% endblock %}
