@@ -2,7 +2,7 @@ import json
 from gurobipy import Model, GRB, quicksum
 import numpy as np
 import plannificateur.tools
-import plannificateur.database
+import model.database
 
 
 #création de classes pour simplifier l'accès aux données
@@ -41,7 +41,7 @@ def parameter(name):
     nb_interim = parameters["size"]["nb_interim"]
     interim = ["interim"]
     post_name = name["post"]
-    posts = [plannificateur.database.Post(post["post"], post["processing_time"], article["article"],)
+    posts = [model.database.Post(post["post"], post["processing_time"], article["article"],)
              for post in post_name]
     operators = np.empty(nb_posts, dtype=object)
     for posts in post_name:

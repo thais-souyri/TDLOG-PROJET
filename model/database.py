@@ -9,8 +9,8 @@ class Person(Model):
     ident = IntegerField(unique=True, primary_key=True)
     name = CharField(unique=True)
     availability = BooleanField()
-    nb_hour_week = IntegerField()   #nombre d'heures déja travaillées dans la semaine
-    nb_hour_day = IntegerField()    #nombre d'heures déja travaillées dans le jour
+    nb_hour_week = IntegerField()
+    nb_hour_day = IntegerField()
     firm_name = CharField()
 
     class Meta:
@@ -42,14 +42,6 @@ class Skill(Model):
         database = db
 
 
-class Activity(Model):
-    name = CharField()
-    nb_article_packages = FloatField()
-
-    class Meta:
-        database = db
-
-
 class User(Model):
     username = CharField(unique=True)
     password = CharField()
@@ -76,7 +68,7 @@ class User(Model):
 
 
 
-db.create_tables([Person, Post, Skill, Activity,User])
+db.create_tables([Person, Post, Skill,User])
 
 
 def create_table_post(path, firm_name):
@@ -92,11 +84,6 @@ def create_table_person(path, firm_name):
         reader = csv.DictReader(csvfile)
         for row in reader:
             Person.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0, firm_name=firm_name)
-    return()
-
-
-def create_table_activity(firm_name, article_package):
-    Activity.create(name=firm_name,nb_article_packages=article_package)
     return()
 
 
@@ -134,8 +121,6 @@ def create_table1():
     Skill(operator=2, post=palletization)
     Skill(operator=1, post=palletization)
 
-    Activity.create(name='br', nb_packages=1, nb_article_packages=2.3,  day=date(2023,  7, 1))
-    Activity.create(name='cd', nb_packages=8, nb_article_packages=1.24, day=date(2023, 7, 1))
 
 
 

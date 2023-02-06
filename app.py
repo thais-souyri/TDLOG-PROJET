@@ -1,15 +1,12 @@
 import os
-import pdfkit as pdfkit
-from flask import Flask, render_template, request, redirect, url_for, flash, make_response, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_bcrypt import Bcrypt
-from flask_login import login_user, LoginManager, login_required, current_user, logout_user, UserMixin
-from peewee import *
+from flask_login import login_user, LoginManager, login_required, current_user, logout_user
 from werkzeug.utils import secure_filename
 
-from plannificateur import database
-from plannificateur.RO3 import planning
-from plannificateur.constants import *
-import plannificateur.database
+from model import database
+from model.constants import *
+import model.database
 from plannificateur.main import *
 
 app = Flask(__name__)
