@@ -3,29 +3,25 @@
 
 <div class="description">
     <h1>Bienvenue sur l'outil de planification CLR!</h1>
-   <a href="{{url_for('login')}}"> Connexion </a><br>
+    <a href="{{url_for('login')}}"> Connexion </a><br>
     <a href="{{url_for('register')}}"> Inscription </a><br>
 
+    <img src="static/entrepots.jpg" id="entrepot" width="500" height="250" class="img-rounded">
+    <img src="static/logo_CLR.png" id="logo" width="150" height="150" class="img-rounded">
+
 </div>
-<img src="static/entrepots.jpg" id="entrepot" width="500" height="250" class="img-rounded">
-<img src="static/logo_CLR.png" id="logo" width="150" height="150" class="img-rounded">
-
-
 
 
 <style>
-
-    #entrepot {
-        position: relative;
-        top:325px;
-        left:520px;
-
-
+#entrepot {
+        position: absolute;
+        top:140px;
+        right:130px;
     }
     #logo {
-    position:relative;
-    top: -25px;
-    left:190px;}
+    position:absolute;
+    top: -160px;
+    right: 305px;}
 </style>
 
 {% endblock %}
