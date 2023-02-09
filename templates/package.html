@@ -1,20 +1,17 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<title>Upload new File</title>
+
 <h1 id="welcome"> Bonjour {{current_user.username}}, veuillez saisir les informations suivantes </h1><br>
 <div class="description">
-    <div class="mb-3">
-    <form method=post enctype=multipart/form-data>
-        <label class="form-label" for="customFile"></label>
-        <input type=file name=file class="form-control" id="customFile">
-        <input type=submit value=Upload>
-    </form>
-</div>
+
     <form action="/result" method='POST'>
+
+        <!-- Permet à l'utilisateur de renseigner le nombre de colis à expédier -->
         <input name="nb_colis" autocomplete="off" autofocus="nb_colis"
                placeholder="Nombre de colis à expédier" type="number" required min="0">
 
+        <!-- Permet à l'utilisateur de renseigner le nombre moyen de pièces par colis -->
         <input name="nb_pieces" autocomplete="off" autofocus="nb_pieces"
                placeholder="Nombre moyen de pièces par colis" type="number" required min="0">
 
@@ -26,10 +23,11 @@
 
     </form>
 
-    <p></p>
+    <!-- Lien pour se déconnecter -->
     <a href="{{url_for('login')}}"> Déconnexion </a>
 </div>
 
+<!-- Images -->
 
 <img src="static/carton.jpg" id="carton1" width="150" height="150" class="img-rounded">
 <img src="static/carton.jpg" id="carton2" width="150" height="150" class="img-rounded">
@@ -38,6 +36,9 @@
 <img src="static/carton.jpg" id="carton5" width="150" height="150" class="img-rounded">
 <img src="static/carton.jpg" id="carton6" width="150" height="150" class="img-rounded">
 <img src="static/carton.jpg" id="carton7" width="150" height="150" class="img-rounded">
+
+
+<!-- CSS -->
 
 
 <style>
