@@ -4,6 +4,9 @@ body {
     background: #f2f6e9;
 }
 
+
+/*barre de navigation */
+
 .navbar {
     background: #343a40;
 }
@@ -28,6 +31,9 @@ body {
 }
 
 
+
+
+/* Classe principale: arrière-plan et texte  */
 .description {
     left: 50%;
     position: absolute;
@@ -35,6 +41,7 @@ body {
     transform: translate(-50%, -55%);
     text-align: center;
 }
+
 
 .description h1 {
     color: #e96a19;
@@ -60,7 +67,7 @@ body {
 .entrepot {
     position: absolute;
     top: 130px;
-    right: 130px; ;
+    right: 130px;;
 
 }
 
@@ -73,30 +80,7 @@ body {
 
 
 
-
-
-.container {
-    left: 50%;
-    position: absolute;
-    top: 45%;
-    transform: translate(-50%, -55%);
-    text-align: center;
-}
-
-.container h1 {
-    color: #e96a19;
-}
-
-
-.bg-size-half {
-    background-size: 50%;
-}
-
-.bg-position-top {
-    background-position: top;
-}
-
-
+/*page à propos de nous  */
 #service {
     margin: 34px;
     display: flex;
@@ -147,7 +131,3 @@ body {
     font-family: sans-serif;
     text-align: center;
 }
-
-
-
-

@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
+
 <div class="">
     <h1 id="page-title"> Planning </h1>
+
+    <!-- Création d'un tableau pour présenter le planning -->
     <table class="table">
         <h1 id="nbtot">Pour cette semaine, vous devez prévoir {{nb_person}} opérateurs dont {{nb_interim}}
             intérimaires</h1>
@@ -38,6 +41,9 @@
 
 {% endblock %}
 
+
+
+<!-- CSS -->
 {% block custom_css %}
 <style>
     #page-title {

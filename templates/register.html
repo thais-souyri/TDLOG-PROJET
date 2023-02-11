@@ -3,26 +3,37 @@
 
 <div class="description">
     <h1>Page d'inscription</h1>
+
     <form method="post" action="/register">
+        <!-- Identifiant -->
         <label for="username">Identifiant:</label>
         <input type="text" id="username" name="username"><br>
+
+        <!-- Mot de passe -->
         <label for="password">Mot de passe:</label>
         <input type="password" id="password" name="password"><br>
+
+
         <input type="submit" value="S'inscrire">
     </form>
-    <a href="{{url_for('login')}}"> Vous avez déjà un compte ? Connectez-vous  </a><br>
+
+
+
+    <!-- Lien vers la connexion -->
+    <a href="{{url_for('login')}}"> Vous avez déjà un compte ? Connectez-vous </a><br>
 
 </div>
+<!-- Image -->
 <img src="static/inscription.png" id="inscription" width="300" height="200" class="img-rounded">
 
 
-
+<!-- CSS: Placement de l'image  -->
 <style>
 
     #inscription {
         position: absolute;
-        bottom:40px;
-        right:610px;
+        bottom: 40px;
+        right: 610px;
     }
 
 </style>

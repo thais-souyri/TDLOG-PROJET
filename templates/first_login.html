@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<title> Première connexion </title>
+
+<div class="description">
+<h1 id="first"> Veuillez uploader les fichiers (employés, postes, compétences) </h1>
+    <br>
+
+    <!-- Permet à l'utilisateur d'uploader les fichiers -->
+    <div class="mb-3">
+        <form method=post enctype=multipart/form-data>
+            <label class="form-label" for="customFile"></label>
+            <input type=file name=file class="form-control" id="customFile">
+            <input type=submit value=Upload>
+        </form>
+    </div>
+
+
+    <form action="/to_login" method='POST'>
+
+        <input class="btn btn-primary" id="continuer" type="submit" value="Continuer">
+
+
+    </form>
+
+</div>
+
+<!-- CSS-->
+
+<style>
+
+
+
+    #continuer {
+        border: 1px solid #e96a19;
+        background: #e96a19;
+        border-radius: 0;
+        color: #fff;
+
+    }
+
+</style>
+
+
+{% endblock %}
