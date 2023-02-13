@@ -11,14 +11,27 @@
 
     <!-- Images -->
     <div class="entrepot">
-        <img src="static/entrepots.jpg" id="entrepot" width="500" height="250" class="img-rounded">
+        <img id="entrepot" src="static/entrepots.jpg" id="entrepot" width="500" height="250" class="img-rounded">
     </div>
     <div class="logo">
-        <img src="static/logo_CLR.png" id="logo" width="150" height="150" class="img-rounded">
+        <img id="logo" src="static/logo_CLR.png" id="logo" width="150" height="150" class="img-rounded">
     </div>
 
 
 </div>
 
+<style>
+    #entrepot {
+        position: absolute;
+        top: 130px;
+        right: 130px;;
 
+    }
+
+    #logo {
+        position: absolute;
+        top: -175px;
+        right: 300px;
+    }
+</style>
 {% endblock %}
