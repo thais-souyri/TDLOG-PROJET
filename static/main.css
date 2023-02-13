@@ -61,25 +61,6 @@ body {
     color: #000;
 }
 
-/*page de lancement */
-
-
-.entrepot {
-    position: absolute;
-    top: 130px;
-    right: 130px;;
-
-}
-
-.logo {
-    position: absolute;
-    top: -175px;
-    right: 300px;
-}
-
-
-
-
 /*page à propos de nous  */
 #service {
     margin: 34px;
