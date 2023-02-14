@@ -115,9 +115,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # hash the password
+        # hashe le mot de passe
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        # store the user in the database
+        # stocke l'utilisateur dans la base de données
         model.database.User.create(username=username, password=hashed_password)
         return redirect('/first')
     return render_template('register.html')
@@ -131,13 +131,13 @@ def first_login():
 
 @app.route('/to_login', methods=['GET', 'POST'])
 def to_login():
-    return render_template('login.html')
+    return render_template('login1.html')
 
 
-# permet à l'utilisateur de se connecter
+# la base de données est créée uniquement à la première connexion, à partir du nom d'utilisateur
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/login1', methods=['GET', 'POST'])
+def login1():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -164,7 +164,30 @@ def login():
         except model.database.User.DoesNotExist:
             return 'Incorrect username'
 
+    return render_template('first_login.html')
+
+
+# permet à l'utilisateur de se connecter (même fonction que la précédente à l'exception qu'elle ne crée pas la base de données)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        try:
+            user = model.database.User.get(model.database.User.username == username)
+
+            # check if the password is correct
+            if bcrypt.check_password_hash(user.password, password):
+                login_user(user)
+                return render_template('package.html')
+            else:
+                return 'Incorrect password'
+        except model.database.User.DoesNotExist:
+            return 'Incorrect username'
+
     return render_template('login.html')
+
+
 
 
 # permet de se déconnecter
@@ -184,8 +207,6 @@ def us():
 # utilise les infos de l'utilisateur et redirige vers la page de planning
 @app.route("/result", methods=["POST", "GET"])
 def result():
-    
-
     colis = int(request.form['nb_colis'])
     pieces = int(request.form['nb_pieces'])
     # utilisation de la fonction RO de création de planning
