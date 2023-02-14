@@ -33,6 +33,8 @@ class Post(Model):
         database = db
 
 
+
+
 class Skill(Model):
     operator = ForeignKeyField(Person, backref='persons')
     post = ForeignKeyField(Post, backref='posts')
@@ -96,30 +98,6 @@ def create_table_skill(path, firm_name):
                 Skill.create(operator=row['operator'], post=post, firm_name=firm_name)
     return()
 
-
-
-
-
-def create_table1():
-    picking = Post.create(name='picking', time=2, index=1)
-    packaging = Post.create(name='packaging', time=1, index=2)
-    palletization = Post.create(name='palletization', time=3, index=3)
-
-    Person.create(ident=1, name='one', availability=True, nb_hour_week=0, nb_hour_day=0)
-    Person.create(ident=2, name='two', availability=True, nb_hour_week=0, nb_hour_day=0)
-    Person.create(ident=3, name='three', availability=True, nb_hour_week=0, nb_hour_day=0)
-    Person.create(ident=4, name='four', availability=True, nb_hour_week=0, nb_hour_day=0)
-    Person.create(ident=5, name='five', availability=True, nb_hour_week=0, nb_hour_day=0)
-
-    Skill(operator=1, post=picking)
-    Skill(operator=3, post=picking)
-    Skill(operator=5, post=picking)
-    Skill(operator=2, post=packaging)
-    Skill(operator=3, post=packaging)
-    Skill(operator=4, post=palletization)
-    Skill(operator=5, post=palletization)
-    Skill(operator=2, post=palletization)
-    Skill(operator=1, post=palletization)
 
 
 
