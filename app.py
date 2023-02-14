@@ -181,9 +181,9 @@ def login():
                 login_user(user)
                 return render_template('package.html')
             else:
-                return 'Incorrect password'
+                return render_template('incorrect_password.html')
         except model.database.User.DoesNotExist:
-            return 'Incorrect username'
+            return render_template('incorrect_username.html')
 
     return render_template('login.html')
 
@@ -207,6 +207,7 @@ def us():
 # utilise les infos de l'utilisateur et redirige vers la page de planning
 @app.route("/result", methods=["POST", "GET"])
 def result():
+    # on récupère le nombre de colis à traiter et le nombre de pièces par colis, renseignés par l'utilisateur
     colis = int(request.form['nb_colis'])
     pieces = int(request.form['nb_pieces'])
     # utilisation de la fonction RO de création de planning

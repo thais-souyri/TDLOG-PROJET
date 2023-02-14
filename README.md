@@ -1,4 +1,5 @@
 >**Plannificateur des effectifs dans un entrepôt**
+> -
 
 **Principe**:
 
@@ -28,5 +29,8 @@ Il faut run le fichier python "app.py". Le lien obtenu permet d'accéder au site
 
 **Améliorations clés par rapport à la soutenance**:
 
+*Site web*
+
 -L'utilisateur ne doit uploader ses trois fichiers csv que lors de sa première connexion suivant l'inscription. Ensuite, à chaque connexion, il doit simplement renseigner le nombre de colis à traiter et le nombre de pièces par colis 
 
+-Gestion des mots de passe/noms d'utilisateur incorrects 
