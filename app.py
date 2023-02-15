@@ -85,13 +85,11 @@ def allowed_file(filename):
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
+        # Si l'utilisateur ne sélectionne pas de fichier, le navigateur soumet un fichier vide sans nom
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
@@ -143,7 +141,7 @@ def login1():
         try:
             user = model.database.User.get(model.database.User.username == username)
 
-            # check if the password is correct
+            # vérifie si le mot de passe est correct
             if bcrypt.check_password_hash(user.password, password):
                 login_user(user)
                 # création des bases de données
@@ -175,7 +173,7 @@ def login():
         try:
             user = model.database.User.get(model.database.User.username == username)
 
-            # check if the password is correct
+            # vérifie si le mot de passe est correct
             if bcrypt.check_password_hash(user.password, password):
                 login_user(user)
                 return render_template('package.html')
