@@ -6,7 +6,6 @@ db = SqliteDatabase('firm.db')
 
 
 class Person(Model):
-    ident = IntegerField(unique=True, primary_key=True)
     name = CharField(unique=True)
     availability = BooleanField()
     nb_hour_week = IntegerField()
@@ -85,7 +84,7 @@ def create_table_person(path, firm_name):
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            Person.create(ident=row['ident'], name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0, firm_name=firm_name)
+            Person.create(name=row['name'], availability=True, nb_hour_week=0, nb_hour_day=0, firm_name=firm_name)
     return()
 
 

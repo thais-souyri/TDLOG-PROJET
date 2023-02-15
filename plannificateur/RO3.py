@@ -15,16 +15,16 @@ def persons_available(firm): #renvoie les identifiants des personnes pouvant enc
     persons = []
     (nb_hours_day, nb_hours_week) = nb_hours(firm)
     for person in model.database.Person.select().where(model.database.Person.firm_name == firm).order_by(fn.Random()) : #on les trie aléatoirement, car le choix de la personne a une importance
-        if nb_hours_day[person.ident - 1] < 7 or nb_hours_week[person.ident - 1] < 35 :
-            persons.append(person.ident)
+        if nb_hours_day[person.id - 1] < 7 or nb_hours_week[person.id - 1] < 35 :
+            persons.append(person.id)
     return persons
 
 def persons_available_post(firm,post): #renvoie les identifiants des personnes pouvant travailler sur ce poste
     persons = persons_available(firm)
     p_a_p = []
-    for person in model.database.Person.select().join(model.database.Skill).where(model.database.Skill.operator == model.database.Person.ident).where(model.database.Skill.post == post).where(model.database.Skill.firm_name == firm).select().order_by(fn.Random()):
+    for person in model.database.Person.select().join(model.database.Skill).where(model.database.Skill.operator == model.database.Person.id).where(model.database.Skill.post == post).where(model.database.Skill.firm_name == firm).select().order_by(fn.Random()):
         for i in persons :
-            if person.ident == i:
+            if person.id == i:
                 p_a_p.append(i)
     return p_a_p
 
@@ -90,3 +90,5 @@ def planning (firm, nb_packages, nb_articles_package): #renvoie le planning fina
     nb_person_working += nb_interims
 
     return (planning, nb_interims, nb_person_working)
+
+print (planning("a", 2000, 1.8))
