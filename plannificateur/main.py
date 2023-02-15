@@ -17,7 +17,8 @@ def main(firm, nb_packages, nb_articles_package):
     for skill in model.database.Skill.select().where(model.database.Skill.firm_name == firm):
         nb_skill +=1
     if nb_skill < model.data.max_height_database:
-        (planning, nb_interim, nb_person) = plannificateur.solver.planning(firm, nb_packages, nb_articles_package)
+        #(planning, nb_interim, nb_person) = plannificateur.solver.planning(firm, nb_packages, nb_articles_package)
+        pass
     else :
         (planning, nb_interim, nb_person) = plannificateur.RO.planning(firm, nb_packages, nb_articles_package)
         (planning2, nb_interim2, nb_person2) = plannificateur.RO2.planning(firm, nb_packages, nb_articles_package)
@@ -28,4 +29,4 @@ def main(firm, nb_packages, nb_articles_package):
             (planning, nb_interim, nb_person) = (planning2, nb_interim2, nb_person2)
     return (planning, nb_interim, nb_person)
 
-main("a",12,1.8)
+print(main("a",2000,1.8))
