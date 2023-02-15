@@ -1,11 +1,11 @@
 Fonctionnalités de base du projet:
 
 L'objectif du projet est de créer une interface WEB permettant à l'utilisateur de créer un planning hebdomadaire optimisant le nombre d'opérateurs en fonction de la volumétrie de colis à expédier. 
-Les données entrées par l'utilisateur sont : le nombre de colis à expédier, la période de l'année (FFA ou non) et le domaine d'activité (1 ou 2).
-Ajout du nombre d'employés polyvalents si on a le temps.
-En sortie, l'algorithme renvoit un planning hebdomadaire détaillant le nombre de personnes par poste, par jour, si on a le temps par tranche horaire. 
+Lors de sa première connexion, chaque utilisateur télécharge trois fichiers csv. Le premier liste tous les employés de l'entreprise, le second les postes disponibles et les indicateurs de performance associés. Enfin, le dernier fichier permet d'indiquer quels employés sont associés à chaque poste.
+Enfin, à chaque connexion, l'utilisateur entre les données suivantes : le nombre de colis à expédier dans la semaine et le nombre moyen d'articles par colis.
+En sortie, l'algorithme renvoit un planning hebdomadaire détaillant le nombre de personnes par poste, par demi-journée. 
 
-Afin de réaliser ceci nous créérons plusieurs class : 
+Afin de réaliser ceci, nous avons créé une base de données composée de plusieurs tables: 
 - une class tâche comprenant comme attributs le temps d'exécution par article pour cette tâche; les taches précédentes nécessaires pour effectuer cette tâche. 
 - une class poste comprenant comme attribut les tâches réalisables par ce poste 
 - une class domaine d'activité comprenant comme attributs le nombre d'article moyen par colis 
@@ -19,4 +19,4 @@ La fonction objectif sera donc la somme du nombre d'opérateurs par poste. Avec 
 Afin de développer l'interface Web, nous utiliserons la framework Flask. 
 
 
-Afin d'améliorer notre programme, nous souhaitons mettre à jour la clé de répartition du nombre de colis à expédier par jour avec les données rentrées par l'utilisateur. Ce qui permettrait au programme de s'adapter au fil des mois. 
+
