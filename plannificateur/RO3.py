@@ -91,4 +91,3 @@ def planning (firm, nb_packages, nb_articles_package): #renvoie le planning fina
 
     return (planning, nb_interims, nb_person_working)
 
-print (planning("a", 2000, 1.8))

@@ -159,9 +159,9 @@ def login1():
 
                 return render_template('package.html')
             else:
-                return 'Incorrect password'
+                return render_template('incorrect_password.html')
         except model.database.User.DoesNotExist:
-            return 'Incorrect username'
+            return render_template('incorrect_username.html')
 
     return render_template('first_login.html')
 
@@ -210,7 +210,7 @@ def result():
     colis = int(request.form['nb_colis'])
     pieces = int(request.form['nb_pieces'])
     # utilisation de la fonction RO de création de planning
-    resultat = plannificateur.main.main(current_user.username, colis, pieces)
+    resultat = plannificateur.RO3.planning(current_user.username, colis, pieces)
 
     return render_template("result.html", days=DAYS, posts=POSTS2,
                            planning=resultat[0], nb_person=resultat[2], nb_interim=resultat[1])
