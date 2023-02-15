@@ -19,14 +19,10 @@ def main(firm, nb_packages, nb_articles_package):
     if nb_skill < model.data.max_height_database:
         #(planning, nb_interim, nb_person) = plannificateur.solver.planning(firm, nb_packages, nb_articles_package)
         pass
+
     else :
-        (planning, nb_interim, nb_person) = plannificateur.RO.planning(firm, nb_packages, nb_articles_package)
+        (planning, nb_interim, nb_person) = plannificateur.RO4.planning(firm, nb_packages, nb_articles_package)
         (planning2, nb_interim2, nb_person2) = plannificateur.RO2.planning(firm, nb_packages, nb_articles_package)
-        if nb_person2 < nb_person :
-            (planning, nb_interim, nb_person) = (planning2, nb_interim2, nb_person2)
-        (planning2, nb_interim2, nb_person2) = plannificateur.RO4.planning(firm, nb_packages, nb_articles_package)
-        if nb_person2 < nb_person :
+        if nb_interim2 < nb_interim :
             (planning, nb_interim, nb_person) = (planning2, nb_interim2, nb_person2)
     return (planning, nb_interim, nb_person)
-
-print(main("a",2000,1.8))
