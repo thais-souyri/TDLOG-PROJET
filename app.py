@@ -210,9 +210,9 @@ def result():
     colis = int(request.form['nb_colis'])
     pieces = int(request.form['nb_pieces'])
     # utilisation de la fonction RO de création de planning
-    resultat = plannificateur.RO3.planning(current_user.username, colis, pieces)
+    resultat = plannificateur.main.main(current_user.username, colis, pieces)
 
-    return render_template("result.html", days=DAYS, posts=POSTS2,
+    return render_template("result.html", days=DAYS, posts=POSTS,
                            planning=resultat[0], nb_person=resultat[2], nb_interim=resultat[1])
 
 
