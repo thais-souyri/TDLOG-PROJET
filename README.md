@@ -1,4 +1,4 @@
->**Plannificateur des effectifs dans un entrepôt**
+>**Planificateur des effectifs dans un entrepôt**
 > -
 
 **Principe**:
@@ -34,3 +34,11 @@ Il faut run le fichier python "app.py". Le lien obtenu permet d'accéder au site
 -L'utilisateur ne doit uploader ses trois fichiers csv que lors de sa première connexion suivant l'inscription. Ensuite, à chaque connexion, il doit simplement renseigner le nombre de colis à traiter et le nombre de pièces par colis 
 
 -Gestion des mots de passe/noms d'utilisateur incorrects 
+
+*Utilisation d'un solveur linéaire*
+
+- pour améliorer notre algorithme nous pourrions utiliser un solveur linéaire nous offrant une solution optiamle 
+
+*Vérification des fichiers*
+
+- utiliser des fonctions test pour vérifier si les formats sont compatibles avec notre programme
