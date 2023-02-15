@@ -7,7 +7,6 @@ from flask_login import login_user, LoginManager, login_required, current_user, 
 from werkzeug.utils import secure_filename
 
 from model import database
-from model.constants import *
 import model.database
 from plannificateur.main import *
 
