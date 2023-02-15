@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, login_required, current_user, logout_user
 from werkzeug.utils import secure_filename
-
+from model.constants import *
 from model import database
 import model.database
 from plannificateur.main import *
