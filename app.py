@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, login_required, current_user, logout_user
 from werkzeug.utils import secure_filename
-
+from model.constants import *
 from model import database
 import model.database
 from plannificateur.main import *
@@ -210,7 +210,7 @@ def result():
     colis = int(request.form['nb_colis'])
     pieces = int(request.form['nb_pieces'])
     # utilisation de la fonction RO de création de planning
-    resultat = plannificateur.RO3.planning(current_user.username, colis, pieces)
+    resultat = plannificateur.main.main(current_user.username, colis, pieces)
 
     return render_template("result.html", days=DAYS, posts=POSTS2,
                            planning=resultat[0], nb_person=resultat[2], nb_interim=resultat[1])
