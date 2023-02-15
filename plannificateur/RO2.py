@@ -22,9 +22,9 @@ def planning(firm, nb_packages, nb_articles_package): #renvoie le planning final
         for person in persons_available:
             persons_available_post = person.select().join(model.database.Skill).where(model.database.Skill.operator==person.id).where(model.database.Skill.post == post.name).where(model.database.Skill.firm_name == firm) #personnes disponibles pouvant effectuer ce poste
             for p in persons_available_post :
-                if p.id not in person_working:
+                if p.ident not in person_working:
                     time_operators_post += 35*60 #temps de travail des opérateurs disponibles pour le poste
-                    person_working.append(p.id)
+                    person_working.append(p.ident)
 
 
         if time_needed > 2*model.data.nb_max_team*35*60: # si le temps nécessaire pour expédier tous les colis est supérieur au temps max de travail dans l'entreprise avec 2 équipes, alors il faut rajouter des équipes de nuit

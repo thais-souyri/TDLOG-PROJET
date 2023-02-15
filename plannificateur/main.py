@@ -26,3 +26,4 @@ def main(firm, nb_packages, nb_articles_package):
         if nb_interim2 < nb_interim :
             (planning, nb_interim, nb_person) = (planning2, nb_interim2, nb_person2)
     return (planning, nb_interim, nb_person)
+
