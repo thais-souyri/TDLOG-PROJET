@@ -2,7 +2,7 @@ week = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"]
 
 team = ["matin", "après-midi", "nuit"]
 
-nb_max_team = 50
+nb_max_team = 150
 
 max_height_database = 0
 
